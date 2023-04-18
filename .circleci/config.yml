@@ -45,10 +45,10 @@ jobs:
           var:
             'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
           path: terraform/prod
-      - terraform/destroy:
-          var:
-            'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
-          path: terraform/prod
+    #   - terraform/destroy:
+    #       var:
+    #         'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
+    #       path: terraform/prod
       - run:
           name: get output data rds endpoint
           command: |
