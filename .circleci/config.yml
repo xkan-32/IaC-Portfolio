@@ -1,0 +1,51 @@
+version: 2.1
+orbs:
+  terraform: circleci/terraform@3.2.0
+
+jobs:
+  deploy_IaC_for_terraform:
+    executor: terraform/default
+    steps:
+      - checkout
+      - terraform/init:
+          path: terraform/prod
+      - terraform/validate:
+          path: terraform/prod
+      - terraform/validate:
+          path: terraform/modules/alb
+      - terraform/validate:
+          path: terraform/modules/ec2
+      - terraform/validate:
+          path: terraform/modules/network
+      - terraform/validate:
+          path: terraform/modules/rds
+      - terraform/validate:
+          path: terraform/modules/s3
+      - terraform/validate:
+          path: terraform/modules/securitygroup
+      - terraform/fmt:
+          path: terraform/prod
+      - terraform/fmt:
+          path: terraform/modules/alb
+      - terraform/fmt:
+          path: terraform/modules/ec2
+      - terraform/fmt:
+          path: terraform/modules/network
+      - terraform/fmt:
+          path: terraform/modules/rds
+      - terraform/fmt:
+          path: terraform/modules/s3
+      - terraform/fmt:
+          path: terraform/modules/securitygroup
+      - terraform/plan:
+          path: terraform/prod
+      - terraform/apply:
+          path: terraform/prod
+      # - terraform/destroy:
+      #     path: terraform/prod
+
+
+workflows:
+  IaC-Portfolio:
+    jobs:
+      - deploy_IaC_for_terraform
