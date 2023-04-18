@@ -1,0 +1,32 @@
+#-------------------------------------------------------
+# EC2
+#-------------------------------------------------------
+data "aws_ssm_parameter" "LatestAmiId" {
+  name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+}
+resource "aws_instance" "TeradaEC2Instance" {
+  ami           = data.aws_ssm_parameter.LatestAmiId.value
+  instance_type = var.InstanceType
+  key_name      = var.key_name
+
+  root_block_device {
+    volume_type = var.volume_type
+    volume_size = var.InstanceVolumes
+    encrypted   = false
+  }
+
+  vpc_security_group_ids = [var.vpc_security_group]
+
+  subnet_id = var.publicsubnet1a
+
+  tags = {
+    Name        = "TeradaEC2Instance-${var.NameBase}"
+    Environment = var.env
+  }
+}
+#-------------------------------------------------------
+# OutPuts
+#-------------------------------------------------------
+output "EC2Instanceoutputs" {
+  value = aws_instance.TeradaEC2Instance.id
+}
