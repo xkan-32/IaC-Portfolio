@@ -97,3 +97,9 @@ resource "aws_db_instance" "TeradaDatabases" {
 #     Environment = var.env
 #   }
 # }
+#-------------------------------------------------------
+# OutPuts
+#-------------------------------------------------------
+output "TeradaDatabasesoutputs" {
+  value = aws_db_instance.TeradaDatabases.endpoint
+}

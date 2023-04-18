@@ -52,3 +52,9 @@ resource "aws_lb_listener" "TeradaListenerHTTP" {
     type             = "forward"
   }
 }
+#-------------------------------------------------------
+# OutPuts
+#-------------------------------------------------------
+output "TeradaALBsoutputs" {
+  value = aws_lb.TeradaALB.dns_name
+}
