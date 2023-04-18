@@ -92,7 +92,7 @@ module "my_RDS" {
   MysqlVession            = "8.0.28"
   Username                = "admin"
   # CircleCIの環境変数使用
-  rdspassword = "${var.CIRCLECI_RDS_PASSWORD}"
+  rdspassword = var.CIRCLECI_RDS_PASSWORD
   Storage                 = "20"
   database_name           = "water"
   storage_type            = "gp2"
