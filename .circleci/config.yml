@@ -38,8 +38,12 @@ jobs:
       - terraform/fmt:
           path: terraform/modules/securitygroup
       - terraform/plan:
+          vars:
+            CIRCLECI_RDS_PASSWORD: ${CIRCLECI_RDS_PASSWORD}
           path: terraform/prod
       - terraform/apply:
+          vars:
+            CIRCLECI_RDS_PASSWORD: ${CIRCLECI_RDS_PASSWORD}
           path: terraform/prod
       # - terraform/destroy:
       #     path: terraform/prod
