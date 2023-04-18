@@ -2,7 +2,7 @@
 # サブネットグループ
 #-------------------------------------------------------
 resource "aws_db_subnet_group" "TeradaDBSubnetGroup" {
-  name        = "dbsubnetgroup-${var.NameBase}"
+  name = "dbsubnetgroup-${var.NameBase}"
 
   subnet_ids = [
     var.privatesubnet1a, var.privatesubnet1b
@@ -49,28 +49,28 @@ resource "aws_kms_key" "TeradaRDSencryptKey" {
 # RDS
 #-------------------------------------------------------
 resource "aws_db_instance" "TeradaDatabases" {
-  identifier                  = "dbinstance-${var.NameBase}"
-  instance_class              = var.InstanceClass
-  engine                      = "mysql"
-  engine_version              = var.MysqlVession
-  username                    = var.Username
-  password = var.rdspassword
-# tfstateに記載される為、使用せず
-#  manage_master_user_password = true
-  db_name                     = var.database_name
-  backup_retention_period     = var.backup_retention_period
-  multi_az                    = true
-  publicly_accessible         = false
-  storage_type                = var.storage_type
-  allocated_storage           = var.Storage
-  storage_encrypted           = true
-  parameter_group_name        = aws_db_parameter_group.Teradaparametergroup.name
-  kms_key_id                  = aws_kms_key.TeradaRDSencryptKey.arn
-  copy_tags_to_snapshot       = false
-  delete_automated_backups    = true
-  deletion_protection         = false
-  skip_final_snapshot         = true
-  vpc_security_group_ids      = [var.RDS_securitygroup]
+  identifier     = "dbinstance-${var.NameBase}"
+  instance_class = var.InstanceClass
+  engine         = "mysql"
+  engine_version = var.MysqlVession
+  username       = var.Username
+  password       = var.rdspassword
+  # tfstateに記載される為、使用せず
+  #  manage_master_user_password = true
+  db_name                  = var.database_name
+  backup_retention_period  = var.backup_retention_period
+  multi_az                 = true
+  publicly_accessible      = false
+  storage_type             = var.storage_type
+  allocated_storage        = var.Storage
+  storage_encrypted        = true
+  parameter_group_name     = aws_db_parameter_group.Teradaparametergroup.name
+  kms_key_id               = aws_kms_key.TeradaRDSencryptKey.arn
+  copy_tags_to_snapshot    = false
+  delete_automated_backups = true
+  deletion_protection      = false
+  skip_final_snapshot      = true
+  vpc_security_group_ids   = [var.RDS_securitygroup]
   enabled_cloudwatch_logs_exports = [
     "error",
     "general",
