@@ -95,7 +95,7 @@ module "my_RDS" {
   # CircleCIの環境変数使用
   rdspassword             = var.CIRCLECI_RDS_PASSWORD
   Storage                 = "20"
-  database_name           = "water"
+  database_name           = "water_bill_tracker"
   storage_type            = "gp2"
   backup_retention_period = "1"
 
