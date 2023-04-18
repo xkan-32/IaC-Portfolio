@@ -7,66 +7,66 @@ jobs:
     executor: terraform/default
     steps:
       - checkout
-      - terraform/init:
-          path: terraform/prod
-      - terraform/validate:
-          path: terraform/prod
-      - terraform/validate:
-          path: terraform/modules/alb
-      - terraform/validate:
-          path: terraform/modules/ec2
-      - terraform/validate:
-          path: terraform/modules/network
-      - terraform/validate:
-          path: terraform/modules/rds
-      - terraform/validate:
-          path: terraform/modules/s3
-      - terraform/validate:
-          path: terraform/modules/securitygroup
-      - terraform/fmt:
-          path: terraform/prod
-      - terraform/fmt:
-          path: terraform/modules/alb
-      - terraform/fmt:
-          path: terraform/modules/ec2
-      - terraform/fmt:
-          path: terraform/modules/network
-      - terraform/fmt:
-          path: terraform/modules/rds
-      - terraform/fmt:
-          path: terraform/modules/s3
-      - terraform/fmt:
-          path: terraform/modules/securitygroup
-      - terraform/plan:
-          var:
-            'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
-          path: terraform/prod
-      - terraform/apply:
-          var:
-            'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
-          path: terraform/prod
-    #   - terraform/destroy:
+    #   - terraform/init:
+    #       path: terraform/prod
+    #   - terraform/validate:
+    #       path: terraform/prod
+    #   - terraform/validate:
+    #       path: terraform/modules/alb
+    #   - terraform/validate:
+    #       path: terraform/modules/ec2
+    #   - terraform/validate:
+    #       path: terraform/modules/network
+    #   - terraform/validate:
+    #       path: terraform/modules/rds
+    #   - terraform/validate:
+    #       path: terraform/modules/s3
+    #   - terraform/validate:
+    #       path: terraform/modules/securitygroup
+    #   - terraform/fmt:
+    #       path: terraform/prod
+    #   - terraform/fmt:
+    #       path: terraform/modules/alb
+    #   - terraform/fmt:
+    #       path: terraform/modules/ec2
+    #   - terraform/fmt:
+    #       path: terraform/modules/network
+    #   - terraform/fmt:
+    #       path: terraform/modules/rds
+    #   - terraform/fmt:
+    #       path: terraform/modules/s3
+    #   - terraform/fmt:
+    #       path: terraform/modules/securitygroup
+    #   - terraform/plan:
     #       var:
     #         'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
     #       path: terraform/prod
-      - run:
-          name: get output data rds endpoint
-          command: |
-            mkdir -p /tmp/workspace
-            echo "$(terraform output TeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
-            cat /tmp/workspace/rds_endpoint.txt
-      - run:
-          name: get output data alb dns
-          command: |
-            echo "$(terraform output TeradaALBsoutputs)" > /tmp/workspace/alb_dns_name.txt
-            cat /tmp/workspace/alb_dns_name.txt
-      - run:
-          name: get output data EC2 ID
-          command: |
-            echo "$(terraform output EC2Instanceoutputs1)" > /tmp/workspace/ec2_id_1.txt
-            cat /tmp/workspace/ec2_id_1.txt
-            echo "$(terraform output EC2Instanceoutputs2)" > /tmp/workspace/ec2_id_2.txt
-            cat /tmp/workspace/ec2_id_2.txt
+    #   - terraform/apply:
+    #       var:
+    #         'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
+    #       path: terraform/prod
+      - terraform/destroy:
+          var:
+            'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
+          path: terraform/prod
+    #   - run:
+    #       name: get output data rds endpoint
+    #       command: |
+    #         mkdir -p /tmp/workspace
+    #         echo "$(terraform output TeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
+    #         cat /tmp/workspace/rds_endpoint.txt
+    #   - run:
+    #       name: get output data alb dns
+    #       command: |
+    #         echo "$(terraform output TeradaALBsoutputs)" > /tmp/workspace/alb_dns_name.txt
+    #         cat /tmp/workspace/alb_dns_name.txt
+    #   - run:
+    #       name: get output data EC2 ID
+    #       command: |
+    #         echo "$(terraform output EC2Instanceoutputs1)" > /tmp/workspace/ec2_id_1.txt
+    #         cat /tmp/workspace/ec2_id_1.txt
+    #         echo "$(terraform output EC2Instanceoutputs2)" > /tmp/workspace/ec2_id_2.txt
+    #         cat /tmp/workspace/ec2_id_2.txt
 workflows:
   IaC-Portfolio:
     jobs:
