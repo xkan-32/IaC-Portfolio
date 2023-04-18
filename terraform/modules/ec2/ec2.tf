@@ -12,7 +12,7 @@ locals {
   }
 }
 
-  
+
 
 resource "aws_instance" "TeradaEC2Instance" {
   for_each = local.EC2Instances_map
