@@ -45,8 +45,8 @@ jobs:
           var:
             'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
           path: terraform/prod
-      # - terraform/destroy:
-      #     path: terraform/prod
+      - terraform/destroy:
+          path: terraform/prod
 
 
 workflows:
