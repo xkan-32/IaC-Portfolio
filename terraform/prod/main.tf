@@ -93,9 +93,6 @@ module "my_RDS" {
   MysqlVession  = "8.0.28"
   Username      = "admin"
   rds_endpoint  = aws_db_instance.TeradaDatabases.endpoint
-  output "CircleCITeradaDatabasesoutputs" {
-    value = module.my_RDS.rds_endpoint
-  }
   # CircleCIの環境変数使用
   rdspassword             = var.CIRCLECI_RDS_PASSWORD
   Storage                 = "20"
@@ -134,3 +131,6 @@ module "my_s3" {
 #-------------------------------------------------------
 # 外部で使用するoutput
 #-------------------------------------------------------
+output "CircleCITeradaDatabasesoutputs" {
+    value = module.my_RDS.rds_endpoint
+  }
