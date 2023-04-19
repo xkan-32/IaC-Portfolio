@@ -57,7 +57,7 @@ jobs:
           name: get output data rds endpoint
           command: |
             mkdir -p /tmp/workspace
-            echo "$(terraform output TeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
+            echo "$(terraform output -state=../modules/rds/rds.tf TeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
             cat /tmp/workspace/rds_endpoint.txt
       - run:
           name: get output data alb dns
