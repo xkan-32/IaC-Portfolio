@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   terraform: circleci/terraform@3.2.0
+#   ansible-playbook: orbss/ansible-playbook@0.0.5
 
 jobs:
   deploy_IaC_for_terraform:
@@ -57,7 +58,7 @@ jobs:
           name: get output data rds endpoint
           command: |
             mkdir -p /tmp/workspace
-            echo "$(terraform output TeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
+            echo "$(terraform output CircleCITeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
             cat /tmp/workspace/rds_endpoint.txt
       - run:
           name: get output data alb dns
@@ -78,6 +79,22 @@ jobs:
             cat /tmp/workspace/ec2_ip_1.txt
             echo "$(terraform output EC2InstanceoutputsIP2)" > /tmp/workspace/ec2_ip_2.txt
             cat /tmp/workspace/ec2_ip_2.txt
+
+#   executeAnsible:
+#     executor: ansible-playbook/default
+#     steps:
+#       - checkout
+#       - add_ssh_keys:
+#           fingerprints:
+#             - 2a:c5:6b:40:59:d0:07:89:47:7d:4b:0c:ff:5b:69:f0
+#       - ansible-playbook/install:
+#           version: '2.10.7'
+#       - attach_workspace:
+#           at: /tmp/workspace
+#       - run: cat /tmp/workspace/rds_endpoint.txt
+#       - run: cat /tmp/workspace/rds_endpoint.txt
+#       - run: cat /tmp/workspace/rds_endpoint.txt
+#       - run: cat /tmp/workspace/rds_endpoint.txt
 workflows:
   IaC-Portfolio:
     jobs:
