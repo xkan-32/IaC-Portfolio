@@ -47,3 +47,11 @@ output "EC2Instanceoutputs1" {
 output "EC2Instanceoutputs2" {
   value = aws_instance.TeradaEC2Instance["instance2"].id
 }
+
+output "EC2InstanceoutputsIP1" {
+  value = aws_instance.TeradaEC2Instance["instance1"].public_ip
+}
+
+output "EC2InstanceoutputsIP2" {
+  value = aws_instance.TeradaEC2Instance["instance2"].public_ip
+}
