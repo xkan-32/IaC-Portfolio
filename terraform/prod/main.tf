@@ -131,5 +131,5 @@ module "my_s3" {
 # 外部で使用するoutput
 #-------------------------------------------------------
 output "CircleCITeradaDatabasesoutputs" {
-    value = module.my_RDS.TeradaDatabasesoutputs
+  value = module.my_RDS.TeradaDatabasesoutputs
 }
