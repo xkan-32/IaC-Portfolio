@@ -58,30 +58,30 @@ jobs:
           name: get output data rds endpoint
           command: |
             mkdir -p /tmp/workspace
-            cd terraform/modules/rds
-            echo "$(terraform output TeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
+            cd terraform/prod
+            echo "$(terraform output CircleCITeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
             cat /tmp/workspace/rds_endpoint.txt
       - run:
           name: get output data alb dns
           command: |
-            cd terraform/modules/alb
-            echo "$(terraform output TeradaALBsoutputs)" > /tmp/workspace/alb_dns_name.txt
+            cd terraform/prod
+            echo "$(terraform output CircleCITeradaALBsoutputs)" > /tmp/workspace/alb_dns_name.txt
             cat /tmp/workspace/alb_dns_name.txt
       - run:
           name: get output data EC2 ID
           command: |
-            cd terraform/modules/ec2
-            echo "$(terraform output EC2Instanceoutputs1)" > /tmp/workspace/ec2_id_1.txt
+            cd terraform/prod
+            echo "$(terraform output CircleCIEC2Instanceoutputs1)" > /tmp/workspace/ec2_id_1.txt
             cat /tmp/workspace/ec2_id_1.txt
-            echo "$(terraform output EC2Instanceoutputs2)" > /tmp/workspace/ec2_id_2.txt
+            echo "$(terraform output CircleCIEC2Instanceoutputs2)" > /tmp/workspace/ec2_id_2.txt
             cat /tmp/workspace/ec2_id_2.txt
       - run:
           name: get output data EC2 IP
           command: |
-            cd terraform/modules/ec2
-            echo "$(terraform output EC2InstanceoutputsIP1)" > /tmp/workspace/ec2_ip_1.txt
+            cd terraform/prod
+            echo "$(terraform output CircleCIEC2InstanceoutputsIP1)" > /tmp/workspace/ec2_ip_1.txt
             cat /tmp/workspace/ec2_ip_1.txt
-            echo "$(terraform output EC2InstanceoutputsIP2)" > /tmp/workspace/ec2_ip_2.txt
+            echo "$(terraform output CircleCIEC2InstanceoutputsIP2)" > /tmp/workspace/ec2_ip_2.txt
             cat /tmp/workspace/ec2_ip_2.txt
 
 #   executeAnsible:

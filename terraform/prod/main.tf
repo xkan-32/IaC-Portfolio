@@ -127,3 +127,24 @@ module "my_s3" {
   # 変数へ値の設定
   NameBase = var.NAMEBASE
 }
+#-------------------------------------------------------
+# 外部で使用するoutput
+#-------------------------------------------------------
+output "CircleCITeradaDatabasesoutputs" {
+  value = module.my_RDS.TeradaDatabasesoutputs
+}
+output "CircleCIEC2Instanceoutputs1" {
+  value = module.my_ec2.EC2Instanceoutputs1
+}
+output "CircleCIEC2Instanceoutputs2" {
+  value = module.my_ec2.EC2Instanceoutputs2
+}
+output "CircleCIEC2InstanceoutputsIP1" {
+  value = module.my_ec2.EC2InstanceoutputsIP1
+}
+output "CircleCIEC2InstanceoutputsIP2" {
+  value = module.my_ec2.EC2InstanceoutputsIP2
+}
+output "CircleCITeradaALBsoutputs" {
+  value = module.my_ALB.TeradaALBsoutputs
+}
