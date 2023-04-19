@@ -41,43 +41,43 @@ jobs:
           var:
             'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
           path: terraform/prod
-      - terraform/apply:
-          var:
-            'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
-          path: terraform/prod
-      - run:
-          name: Refresh Terraform state
-          command: |
-            terraform refresh
+    #   - terraform/apply:
+    #       var:
+    #         'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
+    #       path: terraform/prod
+    #   - run:
+    #       name: Refresh Terraform state
+    #       command: |
+    #         terraform refresh
     #   - terraform/destroy:
     #       var:
     #         'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
     #       path: terraform/prod
-      - run:
-          name: get output data rds endpoint
-          command: |
-            mkdir -p /tmp/workspace
-            echo "$(terraform output -state=terraform/modules/rds/rds.tf TeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
-            cat /tmp/workspace/rds_endpoint.txt
-      - run:
-          name: get output data alb dns
-          command: |
-            echo "$(terraform output TeradaALBsoutputs)" > /tmp/workspace/alb_dns_name.txt
-            cat /tmp/workspace/alb_dns_name.txt
-      - run:
-          name: get output data EC2 ID
-          command: |
-            echo "$(terraform output EC2Instanceoutputs1)" > /tmp/workspace/ec2_id_1.txt
-            cat /tmp/workspace/ec2_id_1.txt
-            echo "$(terraform output EC2Instanceoutputs2)" > /tmp/workspace/ec2_id_2.txt
-            cat /tmp/workspace/ec2_id_2.txt
-      - run:
-          name: get output data EC2 IP
-          command: |
-            echo "$(terraform output EC2InstanceoutputsIP1)" > /tmp/workspace/ec2_ip_1.txt
-            cat /tmp/workspace/ec2_ip_1.txt
-            echo "$(terraform output EC2InstanceoutputsIP2)" > /tmp/workspace/ec2_ip_2.txt
-            cat /tmp/workspace/ec2_ip_2.txt
+    #   - run:
+    #       name: get output data rds endpoint
+    #       command: |
+    #         mkdir -p /tmp/workspace
+    #         echo "$(terraform output TeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
+    #         cat /tmp/workspace/rds_endpoint.txt
+    #   - run:
+    #       name: get output data alb dns
+    #       command: |
+    #         echo "$(terraform output TeradaALBsoutputs)" > /tmp/workspace/alb_dns_name.txt
+    #         cat /tmp/workspace/alb_dns_name.txt
+    #   - run:
+    #       name: get output data EC2 ID
+    #       command: |
+    #         echo "$(terraform output EC2Instanceoutputs1)" > /tmp/workspace/ec2_id_1.txt
+    #         cat /tmp/workspace/ec2_id_1.txt
+    #         echo "$(terraform output EC2Instanceoutputs2)" > /tmp/workspace/ec2_id_2.txt
+    #         cat /tmp/workspace/ec2_id_2.txt
+    #   - run:
+    #       name: get output data EC2 IP
+    #       command: |
+    #         echo "$(terraform output EC2InstanceoutputsIP1)" > /tmp/workspace/ec2_ip_1.txt
+    #         cat /tmp/workspace/ec2_ip_1.txt
+    #         echo "$(terraform output EC2InstanceoutputsIP2)" > /tmp/workspace/ec2_ip_2.txt
+    #         cat /tmp/workspace/ec2_ip_2.txt
 workflows:
   IaC-Portfolio:
     jobs:
