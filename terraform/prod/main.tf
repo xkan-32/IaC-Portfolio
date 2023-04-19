@@ -127,9 +127,3 @@ module "my_s3" {
   # 変数へ値の設定
   NameBase = var.NAMEBASE
 }
-#-------------------------------------------------------
-# 外部で使用するoutput
-#-------------------------------------------------------
-output "CircleCITeradaDatabasesoutputs" {
-  value = module.my_RDS.TeradaDatabasesoutputs
-}
