@@ -1,9 +1,9 @@
 [EC2_1]
-"{{ lookup('env', 'EC2_ID1') }}"
+"{{ EC2_ID1 }}"
 #[EC2_2]
 #{{ lookup('env', 'ENV_VAR_NAME') }}
 
-[appec2:vars]
+#[appec2:vars]
 # ansible_ssh_private_key_file=/home/ec2-user/.ssh/ec2node.pem
 # This is the default ansible 'hosts' file.
 #
