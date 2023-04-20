@@ -1,9 +1,7 @@
 ---
 - name: update yum
   become: yes
-  yum:
-    name: "*"
-    state: latest
+  shell: bash -lc "yum update"
 
 - name: install git
   become: yes
