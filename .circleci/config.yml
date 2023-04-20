@@ -47,14 +47,14 @@ jobs:
           var:
             'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
           path: terraform/prod
-    #   - run:
-    #       name: Refresh Terraform state
-    #       command: |
-    #         terraform refresh
-    #   - terraform/destroy:
-    #       var:
-    #         'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
-    #       path: terraform/prod
+      - run:
+          name: Refresh Terraform state
+          command: |
+            terraform refresh
+      - terraform/destroy:
+          var:
+            'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
+          path: terraform/prod
       - run:
           name: get output data rds endpoint
           command: |
@@ -73,7 +73,7 @@ jobs:
           command: |
             cd terraform/prod
             echo "$(terraform output CircleCIEC2Instanceoutputs1)" > /tmp/workspace/ec2_id_1.txt
-            cat /tmp/workspace/ec2_id_1.txt
+            cat /tmp/workspace/ec2_id_1.txts
             echo "$(terraform output CircleCIEC2Instanceoutputs2)" > /tmp/workspace/ec2_id_2.txt
             cat /tmp/workspace/ec2_id_2.txt
       - run:
