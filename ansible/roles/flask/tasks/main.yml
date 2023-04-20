@@ -8,7 +8,10 @@
 
 - name: install git
   become: yes
-  command: yum install git-all -y 
+  yum:
+    name: git
+    state: present
+    lock_timeout: 180
 
 - name: check mysql installed
   stat:
