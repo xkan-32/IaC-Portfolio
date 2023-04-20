@@ -8,7 +8,7 @@
 
 - name: install git
   become: yes
-  shell: bash -lc "yum install git-all"
+  command: yum install git-all -y 
 
 - name: check mysql installed
   stat:
