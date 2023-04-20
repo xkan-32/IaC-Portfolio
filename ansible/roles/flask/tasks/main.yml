@@ -1,7 +1,10 @@
 ---
 - name: update yum
   become: yes
-  shell: bash -lc "yum update"
+  yum:
+    name: "*"
+    state: latest
+  ignore_errors: yes
 
 - name: install git
   become: yes
@@ -113,3 +116,4 @@
 - name: start uwsgi
   become: yes
   shell: bash -lc "uwsgi --ini uwsgi.ini --daemonize /home/ec2-user/uwsgi.log"
+  
