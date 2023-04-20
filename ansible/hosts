@@ -1,4 +1,4 @@
-[EC2_1]
+[ec2-1]
 "{{ EC2_ID1 }}"
 #[EC2_2]
 #{{ lookup('env', 'ENV_VAR_NAME') }}
