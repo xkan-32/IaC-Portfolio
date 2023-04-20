@@ -1,96 +1,105 @@
-version: 2.1
-orbs:
-  terraform: circleci/terraform@3.2.0
+
+# version: 2.1
+# orbs:
+#   terraform: circleci/terraform@3.2.0
 #   ansible-playbook: orbss/ansible-playbook@0.0.5
 
-jobs:
-  deploy_IaC_for_terraform:
-    executor: terraform/default
-    steps:
-      - checkout
-      - terraform/init:
-          path: terraform/prod
-      - terraform/validate:
-          path: terraform/prod
-      - terraform/validate:
-          path: terraform/modules/alb
-      - terraform/validate:
-          path: terraform/modules/ec2
-      - terraform/validate:
-          path: terraform/modules/network
-      - terraform/validate:
-          path: terraform/modules/rds
-      - terraform/validate:
-          path: terraform/modules/s3
-      - terraform/validate:
-          path: terraform/modules/securitygroup
-      - terraform/fmt:
-          path: terraform/prod
-      - terraform/fmt:
-          path: terraform/modules/alb
-      - terraform/fmt:
-          path: terraform/modules/ec2
-      - terraform/fmt:
-          path: terraform/modules/network
-      - terraform/fmt:
-          path: terraform/modules/rds
-      - terraform/fmt:
-          path: terraform/modules/s3
-      - terraform/fmt:
-          path: terraform/modules/securitygroup
-      - terraform/plan:
-          var:
-            'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
-          path: terraform/prod
-      - terraform/apply:
-          var:
-            'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
-          path: terraform/prod
-    #   - run:
-    #       name: Refresh Terraform state
-    #       command: |
-    #         terraform refresh
-      - terraform/destroy:
-          var:
-            'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
-          path: terraform/prod
-    #   - run:
-    #       name: get output data rds endpoint
-    #       command: |
-    #         mkdir -p /tmp/workspace
-    #         cd terraform/prod
-    #         echo "$(terraform output CircleCITeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
-    #         cat /tmp/workspace/rds_endpoint.txt
-    #   - run:
-    #       name: get output data alb dns
-    #       command: |
-    #         cd terraform/prod
-    #         echo "$(terraform output CircleCITeradaALBsoutputs)" > /tmp/workspace/alb_dns_name.txt
-    #         cat /tmp/workspace/alb_dns_name.txt
-    #   - run:
-    #       name: get output data EC2 ID
-    #       command: |
-    #         cd terraform/prod
-    #         echo "$(terraform output CircleCIEC2Instanceoutputs1)" > /tmp/workspace/ec2_id_1.txt
-    #         cat /tmp/workspace/ec2_id_1.txt
-    #         echo "$(terraform output CircleCIEC2Instanceoutputs2)" > /tmp/workspace/ec2_id_2.txt
-    #         cat /tmp/workspace/ec2_id_2.txt
-    #   - run:
-    #       name: get output data EC2 IP
-    #       command: |
-    #         cd terraform/prod
-    #         echo "$(terraform output CircleCIEC2InstanceoutputsIP1)" > /tmp/workspace/ec2_ip_1.txt
-    #         cat /tmp/workspace/ec2_ip_1.txt
-    #         echo "$(terraform output CircleCIEC2InstanceoutputsIP2)" > /tmp/workspace/ec2_ip_2.txt
-    #         cat /tmp/workspace/ec2_ip_2.txt
-
+# jobs:
+#   deploy_IaC_for_terraform:
+#     executor: terraform/default
+#     steps:
+#       - checkout
+#       - terraform/init:
+#           path: terraform/prod
+#       - terraform/validate:
+#           path: terraform/prod
+#       - terraform/validate:
+#           path: terraform/modules/alb
+#       - terraform/validate:
+#           path: terraform/modules/ec2
+#       - terraform/validate:
+#           path: terraform/modules/network
+#       - terraform/validate:
+#           path: terraform/modules/rds
+#       - terraform/validate:
+#           path: terraform/modules/s3
+#       - terraform/validate:
+#           path: terraform/modules/securitygroup
+#       - terraform/fmt:
+#           path: terraform/prod
+#       - terraform/fmt:
+#           path: terraform/modules/alb
+#       - terraform/fmt:
+#           path: terraform/modules/ec2
+#       - terraform/fmt:
+#           path: terraform/modules/network
+#       - terraform/fmt:
+#           path: terraform/modules/rds
+#       - terraform/fmt:
+#           path: terraform/modules/s3
+#       - terraform/fmt:
+#           path: terraform/modules/securitygroup
+#       - terraform/plan:
+#           var:
+#             'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
+#           path: terraform/prod
+#       - terraform/apply:
+#           var:
+#             'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
+#           path: terraform/prod
+#       - run:
+#           name: Refresh Terraform state
+#           command: |
+#             terraform refresh
+#       - terraform/destroy:
+#           var:
+#             'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
+#           path: terraform/prod
+#       - run:
+#           name: get output data rds endpoint
+#           command: |
+#             mkdir -p /tmp/workspace
+#             cd terraform/prod
+#             echo "$(terraform output CircleCITeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
+#             cat /tmp/workspace/rds_endpoint.txt
+#       - run:
+#           name: get output data alb dns
+#           command: |
+#             cd terraform/prod
+#             echo "$(terraform output CircleCITeradaALBsoutputs)" > /tmp/workspace/alb_dns_name.txt
+#             cat /tmp/workspace/alb_dns_name.txt
+#       - run:
+#           name: get output data EC2 ID
+#           command: |
+#             cd terraform/prod
+#             echo "$(terraform output CircleCIEC2Instanceoutputs1)" > /tmp/workspace/ec2_id_1.txt
+#             cat /tmp/workspace/ec2_id_1.txt
+#             echo "$(terraform output CircleCIEC2Instanceoutputs2)" > /tmp/workspace/ec2_id_2.txt
+#             cat /tmp/workspace/ec2_id_2.txt
+#       - run:
+#           name: get output data EC2 IP
+#           command: |
+#             cd terraform/prod
+#             echo "$(terraform output CircleCIEC2InstanceoutputsIP1)" > /tmp/workspace/ec2_ip_1.txt
+#             cat /tmp/workspace/ec2_ip_1.txt
+#             echo "$(terraform output CircleCIEC2InstanceoutputsIP2)" > /tmp/workspace/ec2_ip_2.txt
+#             cat /tmp/workspace/ec2_ip_2.txt
+#       - persist_to_workspace:
+#           root: /tmp/workspace
+#           paths:
+#             - ec2_id_1.txt
+#             - ec2_id_2.txt
+#             - ec2_ip_1.txt
+#             - ec2_ip_2.txt
+#             - rds_endpoint.txt
+#             - alb_dns_name.txt
 #   executeAnsible:
 #     executor: ansible-playbook/default
 #     steps:
 #       - checkout
 #       - add_ssh_keys:
 #           fingerprints:
-#             - 2a:c5:6b:40:59:d0:07:89:47:7d:4b:0c:ff:5b:69:f0
+#             - dc:58:38:9e:a9:91:a3:e1:da:55:f2:29:05:ba:85:b2:11:11:f7:8b
 #       - ansible-playbook/install:
 #           version: '2.10.7'
 #       - attach_workspace:
@@ -101,9 +110,12 @@ jobs:
 #       - run: cat /tmp/workspace/ec2_ip_2.txt
 #       - ansible-playbook/playbook:
 #           playbook: ansible/playbook.yml
-#           playbook-options: '-u ec2-user -i ansible/hosts --private-key ~/.ssh/id_rsa --extra-vars
+#           playbook-options: '-u ec2-user -i ansible/hosts --private-key ~/.ssh/id_rsa --extra-vars "ALB_DNS=$(cat /tmp/workspace/alb_dns_name.txt)" --extra-vars "EC2_ID1=$(cat /tmp/workspace/ec2_ip_1.txt)" --extra-vars "RDS_PASSWORD=$CIRCLECI_RDS_PASSWORD" --extra-vars "RDS_ENDPOINT=$(cat /tmp/workspace/rds_endpoint.txt)"
 
-workflows:
-  IaC-Portfolio:
-    jobs:
-      - deploy_IaC_for_terraform
+# workflows:
+#   IaC-Portfolio:
+#     jobs:
+#       - deploy_IaC_for_terraform
+#       - executeAnsible:
+#           requires:
+#             - deploy_IaC_for_terraform

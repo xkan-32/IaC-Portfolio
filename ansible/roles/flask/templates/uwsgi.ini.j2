@@ -1,0 +1,11 @@
+[uwsgi]
+module = app
+callable = app
+master = true
+processes = 4
+
+socket = /home/ec2-user/uwsgi.sock
+chmod-socket = 666
+vacuum = true
+wsgi-file = /home/ec2-user/sample-app/app.py
+die-on-term = true

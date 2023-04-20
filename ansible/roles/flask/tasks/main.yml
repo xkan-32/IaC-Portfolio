@@ -1,0 +1,117 @@
+---
+- name: update yum
+  become: yes
+  yum:
+    name: "*"
+    state: latest
+
+- name: install git
+  become: yes
+  yum:
+    name: git
+    state: present
+    lock_timeout: 180
+
+- name: check mysql installed
+  stat:
+    path: /usr/lib/systemd/system/mysqld.service
+  register: mysql_installed
+
+- name: install mysql
+  become_user: ec2-user
+  shell: bash -lc "curl -fsSL https://raw.githubusercontent.com/MasatoshiMizumoto/raisetech_documents/main/aws/scripts/mysql_amazon_linux_2.sh | sh"
+  when: not mysql_installed.stat.exists
+
+- name: stop mysql
+  become: yes
+  shell: bash -lc "service mysqld stop"
+
+- name: Create a Python virtual environment
+  become_user: ec2-user
+  command: python3 -m venv venv
+
+- name: Activate virtual environment
+  become_user: ec2-user
+  shell: bash -lc "source venv/bin/activate"
+
+- name: check app installed
+  stat: 
+    path: /home/ec2-user/sample-app
+  register: app_installed
+
+- name: git clone app
+  git:
+    repo: https://github.com/xkan-32/sample-app.git
+    dest: /home/ec2-user/sample-app
+  when: not app_installed.stat.exists
+
+- name: python modules install
+  become_user: ec2-user
+  shell: bash -lc "pip3 install -r requirements.txt"
+  args:
+    chdir: "/home/ec2-user/sample-app/"
+
+- name: Database make table
+  become_user: ec2-user
+  shell: bash -lc "mysql -h "{{ RDS_ENDPOINT }}" -u admin -p"{{ RDS_PASSWORD }}" < database.sql
+  args:
+    chdir: "/home/ec2-user/sample-app/"
+
+- name: edit databese_host
+  become_user: ec2-user
+  lineinfile:
+    path: /home/ec2-user/sample-app/app.py
+    regexp: '        host="localhost",'
+    line: '        host="{{ RDS_ENDPOINT }}",'
+
+- name: edit databese_password
+  become_user: ec2-user
+  lineinfile:
+    path: /home/ec2-user/sample-app/app.py
+    regexp: '        password="password",'
+    line: '        password="{{ RDS_PASSWORD }}",'
+
+- name: install Development Tool
+  become: yes
+  shell: bash -lc "yum groupinstall "Development Tools""
+
+- name: install python3-devel
+  become: yes
+  shell: bash -lc "yum install python3-devel"
+
+- name: install uwsgi
+  shell: bash -lc "pip install uwsgi"
+
+- name: install nginx
+  become: yes
+  shell: bash -lc "amazon-linux-extras install -y nginx1"
+
+- name: setting nginx 
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+
+- name: setting nginx for app
+  template:
+    src: templates/app.conf.j2
+    dest: /etc/nginx/conf.d/app.conf
+
+- name: edit app.conf
+  become: yes
+  lineinfile: 
+    path: /etc/nginx/conf.d/app.conf
+    regexp: '        server_name ;'
+    line: '        server_name {{ ALB_DNS }};'
+
+- name: setting uwsgi
+  template:
+    src: templates/uwsgi.ini.j2
+    dest: /home/ec2-user/sample-app/uwsgi.ini
+
+- name: start nginx
+  become: yes
+  shell: bash -lc "service nginx start"
+
+- name: start uwsgi
+  become: yes
+  shell: bash -lc "uwsgi --ini uwsgi.ini --daemonize /home/ec2-user/uwsgi.log"
