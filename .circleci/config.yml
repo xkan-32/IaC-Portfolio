@@ -99,7 +99,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - dc:58:38:9e:a9:91:a3:e1:da:55:f2:29:05:ba:85:b2:11:11:f7:8b
+            - 5e:e4:92:bb:b1:76:b2:9c:9b:21:6e:c3:e5:83:9e:bd
       - ansible-playbook/install:
           version: '2.10.7'
       - attach_workspace:
