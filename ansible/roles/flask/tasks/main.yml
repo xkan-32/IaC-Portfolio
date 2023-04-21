@@ -53,7 +53,7 @@
     chdir: "/home/ec2-user/sample-app/"
 
 - name: Install MySQL-Python module1
-  yum: name=MySQL-python27
+  yum: name=MySQL-python
 
 - name: Install MySQL-Python module2
   yum: name=PyMySQL
