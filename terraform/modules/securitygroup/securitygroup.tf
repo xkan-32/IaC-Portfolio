@@ -74,7 +74,7 @@ resource "aws_security_group" "TeradaSecurityGroup02" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
-  
+
   tags = {
     Environment = var.env
   }
