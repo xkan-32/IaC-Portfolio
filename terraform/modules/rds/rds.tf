@@ -101,5 +101,5 @@ resource "aws_db_instance" "TeradaDatabases" {
 # OutPuts
 #-------------------------------------------------------
 output "TeradaDatabasesoutputs" {
-  value = aws_db_instance.TeradaDatabases.endpoint
+  value = split(":", aws_db_instance.TeradaDatabases.endpoint)[0]
 }
