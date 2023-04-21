@@ -52,9 +52,13 @@
   args:
     chdir: "/home/ec2-user/sample-app/"
 
+# - name: Set MYSQL password
+#   set_fact:
+#     mysql_password: "your-password"
+    
 - name: Database make table
   become_user: ec2-user
-  command: mysql -h {{ RDS_ENDPOINT }} -u admin -p{{ RDS_PASSWORD }} water_bill_tracker < database.sql
+  shell: bash -lc "mysql -h {{ RDS_ENDPOINT }} -u admin -p"{{ RDS_PASSWORD }}" water_bill_tracker < database.sql"
   args:
     chdir: "/home/ec2-user/sample-app/"
 
