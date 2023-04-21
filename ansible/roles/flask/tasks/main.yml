@@ -53,13 +53,14 @@
     chdir: "/home/ec2-user/sample-app/"
 
 - name: Create tables
-  hosts: {{ RDS_ENDPOINT }}
+  hosts: "{{ EC2_IP1 }}"
   tasks:
     - name: import SQL script
       mysql_db:
         name: water_bill_tracker
         state: present
         target: /home/ec2-user/sample-app/database.sql
+        login_host: "{{ RDS_ENDPOINT }}"
         login_user: admin
         login_password: "{{ RDS_PASSWORD }}"
 
