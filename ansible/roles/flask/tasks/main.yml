@@ -57,7 +57,7 @@
   tasks:
     - name: import SQL script
       community.mysql.mysql_db:
-        name: water_bill_tracker
+        name: 'water_bill_tracker'
         state: present
         target: /home/ec2-user/sample-app/database.sql
         login_host: "{{ RDS_ENDPOINT }}"
