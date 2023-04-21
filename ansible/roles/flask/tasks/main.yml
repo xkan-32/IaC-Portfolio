@@ -116,5 +116,3 @@
 - name: start uwsgi
   become: yes
   shell: bash -lc "uwsgi --ini uwsgi.ini --daemonize /home/ec2-user/uwsgi.log"
-  
-  
