@@ -58,7 +58,7 @@
     
 - name: Database make table
   become_user: ec2-user
-  shell: bash -lc "mysql -h {{ RDS_ENDPOINT }} -u admin -p"{{ RDS_PASSWORD }}" water_bill_tracker < database.sql"
+  shell: bash -lc "mysql -h {{ RDS_ENDPOINT }} -p 3306 -u admin -p"{{ RDS_PASSWORD }}" water_bill_tracker < database.sql"
   args:
     chdir: "/home/ec2-user/sample-app/"
 
