@@ -113,10 +113,6 @@ jobs:
           command: |
             cd ansible
             echo "$(cat /tmp/workspace/ec2_ip_1.txt)" >> hosts   
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       pip2 install MySQL-python
       - ansible-playbook/playbook:
           playbook: ansible/playbook.yml
           playbook-options: '-u ec2-user -i ansible/hosts --private-key ~/.ssh/id_rsa --extra-vars "EC2_IP1=$(cat /tmp/workspace/ec2_ip_1.txt)" --extra-vars "ALB_DNS=$(cat /tmp/workspace/alb_dns_name.txt)" --extra-vars "RDS_PASSWORD=$CIRCLECI_RDS_PASSWORD" --extra-vars "RDS_ENDPOINT=$(cat /tmp/workspace/rds_endpoint.txt)"'

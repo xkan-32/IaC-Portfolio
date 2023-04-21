@@ -55,9 +55,6 @@
 - name: Install MySQL-Python module1
   yum: name=MySQL-python
 
-- name: Install MySQL-Python module2
-  yum: name=PyMySQL
-
 - name: import SQL script
   community.mysql.mysql_db:
     name: water_bill_tracker
