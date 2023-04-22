@@ -108,7 +108,7 @@
 
 - name: install uwsgi
   become_user: ec2-user
-  shell: bash -lc "pip install uwsgi"
+  command: pip install uwsgi
 
 - name: install nginx
   become: yes
