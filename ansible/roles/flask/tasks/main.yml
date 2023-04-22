@@ -92,13 +92,15 @@
     regexp: '        password="password",'
     line: '        password="{{ RDS_PASSWORD }}",'
 
-- name: install Development Tool
+- name: Install Development Tools
   become: yes
-  shell: bash -lc "yum groupinstall "Development Tools""
+  yum:
+    name: "Development Tools"
 
 - name: install python3-devel
   become: yes
-  shell: bash -lc "yum install python3-devel"
+  yum:
+    name: python3-devel
 
 - name: install uwsgi
   shell: bash -lc "pip install uwsgi"
