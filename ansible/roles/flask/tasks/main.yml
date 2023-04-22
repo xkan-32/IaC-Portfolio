@@ -102,6 +102,10 @@
   yum:
     name: python3-devel
 
+- name: Activate virtual environment
+  become_user: ec2-user
+  shell: bash -lc "source venv/bin/activate"
+  
 - name: install uwsgi
   shell: bash -lc "pip install uwsgi"
 
