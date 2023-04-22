@@ -23,6 +23,9 @@
   shell: bash -lc "curl -fsSL https://raw.githubusercontent.com/MasatoshiMizumoto/raisetech_documents/main/aws/scripts/mysql_amazon_linux_2.sh | sh"
   when: not mysql_installed.stat.exists
 
+- name: Install MySQL-Python module1
+  yum: name=MySQL-python
+
 - name: stop mysql
   become: yes
   shell: bash -lc "service mysqld stop"
@@ -51,9 +54,6 @@
   shell: bash -lc "pip3 install -r requirements.txt"
   args:
     chdir: "/home/ec2-user/sample-app/"
-
-- name: Install MySQL-Python module1
-  yum: name=MySQL-python
 
 - name: import SQL script
   community.mysql.mysql_db:
