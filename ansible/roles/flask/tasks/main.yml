@@ -105,8 +105,9 @@
 - name: Activate virtual environment
   become_user: ec2-user
   shell: bash -lc "source venv/bin/activate"
-  
+
 - name: install uwsgi
+  become_user: ec2-user
   shell: bash -lc "pip install uwsgi"
 
 - name: install nginx
