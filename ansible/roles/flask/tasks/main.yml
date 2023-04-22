@@ -142,4 +142,4 @@
 
 - name: start uwsgi
   become_user: ec2-user
-  shell: bash -lc "uwsgi --ini uwsgi.ini --daemonize /home/ec2-user/uwsgi.log"
+  shell: bash -lc "uwsgi --ini /home/ec2-user/sample-app/uwsgi.ini --daemonize /home/ec2-user/uwsgi.log"
