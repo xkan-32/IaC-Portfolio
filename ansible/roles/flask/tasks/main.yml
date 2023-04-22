@@ -141,5 +141,5 @@
   shell: bash -lc "service nginx start"
 
 - name: start uwsgi
-  become: yes
+  become_user: ec2-user
   shell: bash -lc "uwsgi --ini uwsgi.ini --daemonize /home/ec2-user/uwsgi.log"
