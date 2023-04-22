@@ -95,7 +95,7 @@
 - name: Install Development Tools
   become: yes
   yum:
-    name: ["Development Tools"]
+    name: "@Development Tools"
 
 - name: install python3-devel
   become: yes
