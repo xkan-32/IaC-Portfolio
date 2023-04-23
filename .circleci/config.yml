@@ -55,72 +55,72 @@ jobs:
           var:
             'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
           path: terraform/prod
-#       - run:
-#           name: get output data rds endpoint
-#           command: |
-#             mkdir -p /tmp/workspace
-#             cd terraform/prod
-#             echo "$(terraform output CircleCITeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
-#             cat /tmp/workspace/rds_endpoint.txt
-#       - run:
-#           name: get output data alb dns
-#           command: |
-#             cd terraform/prod
-#             echo "$(terraform output CircleCITeradaALBsoutputs)" > /tmp/workspace/alb_dns_name.txt
-#             cat /tmp/workspace/alb_dns_name.txt
-#       - run:
-#           name: get output data EC2 ID
-#           command: |
-#             cd terraform/prod
-#             echo "$(terraform output CircleCIEC2Instanceoutputs1)" > /tmp/workspace/ec2_id_1.txt
-#             cat /tmp/workspace/ec2_id_1.txt
-#             echo "$(terraform output CircleCIEC2Instanceoutputs2)" > /tmp/workspace/ec2_id_2.txt
-#             cat /tmp/workspace/ec2_id_2.txt
-#       - run:
-#           name: get output data EC2 IP
-#           command: |
-#             cd terraform/prod
-#             echo "$(terraform output CircleCIEC2InstanceoutputsIP1)" > /tmp/workspace/ec2_ip_1.txt
-#             cat /tmp/workspace/ec2_ip_1.txt
-#             echo "$(terraform output CircleCIEC2InstanceoutputsIP2)" > /tmp/workspace/ec2_ip_2.txt
-#             cat /tmp/workspace/ec2_ip_2.txt
-#       - persist_to_workspace:
-#           root: /tmp/workspace
-#           paths:
-#             - ec2_id_1.txt
-#             - ec2_id_2.txt
-#             - ec2_ip_1.txt
-#             - ec2_ip_2.txt
-#             - rds_endpoint.txt
-#             - alb_dns_name.txt
-#   executeAnsible:
-#     executor: ansible-playbook/default
-#     steps:
-#       - checkout
-#       - add_ssh_keys:
-#           fingerprints:
-#             - 5e:e4:92:bb:b1:76:b2:9c:9b:21:6e:c3:e5:83:9e:bd
-#       - ansible-playbook/install:
-#           version: '2.10.7'
-#       - attach_workspace:
-#           at: /tmp/workspace
-#       - run: cat /tmp/workspace/rds_endpoint.txt
-#       - run: cat /tmp/workspace/alb_dns_name.txt
-#       - run: cat /tmp/workspace/ec2_ip_1.txt
-#       - run: cat /tmp/workspace/ec2_ip_2.txt
-#       - run:
-#           name: get output data EC2 IP
-#           command: |
-#             cd ansible
-#             echo "$(cat /tmp/workspace/ec2_ip_1.txt)" >> hosts   
-#       - ansible-playbook/playbook:
-#           playbook: ansible/playbook.yml
-#           playbook-options: '-u ec2-user -i ansible/hosts --private-key ~/.ssh/id_rsa --extra-vars "EC2_IP1=$(cat /tmp/workspace/ec2_ip_1.txt)" --extra-vars "ALB_DNS=$(cat /tmp/workspace/alb_dns_name.txt)" --extra-vars "RDS_PASSWORD=$CIRCLECI_RDS_PASSWORD" --extra-vars "RDS_ENDPOINT=$(cat /tmp/workspace/rds_endpoint.txt)"'
+      - run:
+          name: get output data rds endpoint
+          command: |
+            mkdir -p /tmp/workspace
+            cd terraform/prod
+            echo "$(terraform output CircleCITeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
+            cat /tmp/workspace/rds_endpoint.txt
+      - run:
+          name: get output data alb dns
+          command: |
+            cd terraform/prod
+            echo "$(terraform output CircleCITeradaALBsoutputs)" > /tmp/workspace/alb_dns_name.txt
+            cat /tmp/workspace/alb_dns_name.txt
+      - run:
+          name: get output data EC2 ID
+          command: |
+            cd terraform/prod
+            echo "$(terraform output CircleCIEC2Instanceoutputs1)" > /tmp/workspace/ec2_id_1.txt
+            cat /tmp/workspace/ec2_id_1.txt
+            echo "$(terraform output CircleCIEC2Instanceoutputs2)" > /tmp/workspace/ec2_id_2.txt
+            cat /tmp/workspace/ec2_id_2.txt
+      - run:
+          name: get output data EC2 IP
+          command: |
+            cd terraform/prod
+            echo "$(terraform output CircleCIEC2InstanceoutputsIP1)" > /tmp/workspace/ec2_ip_1.txt
+            cat /tmp/workspace/ec2_ip_1.txt
+            echo "$(terraform output CircleCIEC2InstanceoutputsIP2)" > /tmp/workspace/ec2_ip_2.txt
+            cat /tmp/workspace/ec2_ip_2.txt
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - ec2_id_1.txt
+            - ec2_id_2.txt
+            - ec2_ip_1.txt
+            - ec2_ip_2.txt
+            - rds_endpoint.txt
+            - alb_dns_name.txt
+  executeAnsible:
+    executor: ansible-playbook/default
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - 5e:e4:92:bb:b1:76:b2:9c:9b:21:6e:c3:e5:83:9e:bd
+      - ansible-playbook/install:
+          version: '2.10.7'
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: cat /tmp/workspace/rds_endpoint.txt
+      - run: cat /tmp/workspace/alb_dns_name.txt
+      - run: cat /tmp/workspace/ec2_ip_1.txt
+      - run: cat /tmp/workspace/ec2_ip_2.txt
+      - run:
+          name: get output data EC2 IP
+          command: |
+            cd ansible
+            echo "$(cat /tmp/workspace/ec2_ip_1.txt)" >> hosts   
+      - ansible-playbook/playbook:
+          playbook: ansible/playbook.yml
+          playbook-options: '-u ec2-user -i ansible/hosts --private-key ~/.ssh/id_rsa --extra-vars "EC2_IP1=$(cat /tmp/workspace/ec2_ip_1.txt)" --extra-vars "ALB_DNS=$(cat /tmp/workspace/alb_dns_name.txt)" --extra-vars "RDS_PASSWORD=$CIRCLECI_RDS_PASSWORD" --extra-vars "RDS_ENDPOINT=$(cat /tmp/workspace/rds_endpoint.txt)"'
 
 workflows:
   IaC-Portfolio:
     jobs:
       - deploy_IaC_for_terraform
-#       - executeAnsible:
-#           requires:
-#             - deploy_IaC_for_terraform
+      - executeAnsible:
+          requires:
+            - deploy_IaC_for_terraform
