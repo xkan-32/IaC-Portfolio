@@ -130,6 +130,15 @@ module "my_s3" {
 #-------------------------------------------------------
 # 外部で使用するoutput
 #-------------------------------------------------------
+output "CircleCIVPCoutputs" {
+  value = module.my_vpc.VPCoutputs
+}
+output "CircleCIPublicSubnet1aoutputs" {
+  value = module.my_vpc.PublicSubnet1aoutputs
+}
+output "CircleCIPublicSubnet1boutputs" {
+  value = module.my_vpc.PublicSubnet1boutputs
+}
 output "CircleCITeradaDatabasesoutputs" {
   value = module.my_RDS.TeradaDatabasesoutputs
 }
