@@ -63,7 +63,7 @@ jobs:
             mkdir -p /tmp/workspace
             cd terraform/prod
             echo "$(terraform output CircleCIVPCoutputs)" > /tmp/workspace/vpc_id.txt
-            cat /tmp/workspace/vpc_id.txt]
+            cat /tmp/workspace/vpc_id.txt
       - run:
           name: get output data subnet1a id
           command: |
