@@ -54,7 +54,7 @@ resource "aws_lb_target_group_attachment" "Teradaattachment" {
   target_group_arn = aws_lb_target_group.TeradaTargetGroup.arn
   target_id        = each.value
   port             = 80
-}    
+}
 #-------------------------------------------------------
 # listener
 #-------------------------------------------------------
