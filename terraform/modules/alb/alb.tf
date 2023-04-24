@@ -42,17 +42,19 @@ resource "aws_lb_target_group" "TeradaTargetGroup" {
     Environment = var.env
   }
 }
-
+locals {
+  ec2_instances = [
+    var.EC2_1,
+    var.EC2_2,
+  ]
+}
 resource "aws_lb_target_group_attachment" "Teradaattachment" {
+  for_each = toset(local.ec2_instances)
 
   target_group_arn = aws_lb_target_group.TeradaTargetGroup.arn
-
-  target_id        = [
-    var.EC2_1,
-    var.EC2_2
-  ]
+  target_id        = each.value
   port             = 80
-}
+}    
 #-------------------------------------------------------
 # listener
 #-------------------------------------------------------
