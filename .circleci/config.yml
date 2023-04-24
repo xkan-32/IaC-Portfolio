@@ -174,12 +174,12 @@ jobs:
       - run: cat /tmp/workspace/vpc_id.txt
       - run: cat /tmp/workspace/publicsubnet1a-id.txt
       - run: cat /tmp/workspace/publicsubnet1b-id.txt
-      - run: cat /tmp/workspace/ec2_ip_1.txt
+      - run: cat /tmp/workspace/ec2_id_1.txt
       - run: cat /tmp/workspace/alb_targetgroup.txt
       - run: 
           name: create AMI image and save AMI ID
           command: |
-            result=$(aws ec2 create-image --instance-id $(cat /tmp/workspace/ec2_ip_1.txt) --name "My sample-App" --no-reboot)
+            result=$(aws ec2 create-image --instance-id $(cat /tmp/workspace/ec2_id_1.txt) --name "My sample-App" --no-reboot)
             ami_id=$(echo $result | jq -r '.ImageId')
             echo $ami_id > /tmp/workspace/ami_id.txt
       - run: cat /tmp/workspace/ami_id.txt
