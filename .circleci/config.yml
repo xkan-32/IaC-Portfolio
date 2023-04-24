@@ -163,6 +163,7 @@ jobs:
   
   Auto-Scaling:
     executor: aws-cli/default
+    fail_fast: false
     steps:
       - checkout
       - aws-cli/setup:
@@ -176,28 +177,28 @@ jobs:
       - run: cat /tmp/workspace/publicsubnet1b-id.txt
       - run: cat /tmp/workspace/ec2_id_1.txt
       - run: cat /tmp/workspace/alb_targetgroup.txt
-      - run:
-          name: create AMI image and save AMI ID
-          command: |
-            instance_id=$(cat /tmp/workspace/ec2_id_1.txt | tr -d '"')
-            ami_name="My sample-App"
-
-            existing_ami=$(aws ec2 describe-images --filters "Name=name,Values=$ami_name" --query 'Images[*].ImageId' --output text)
-
-            if [ -z "$existing_ami" ]; then
-              result=$(aws ec2 create-image --instance-id $instance_id --name $ami_name --no-reboot)
-              ami_id=$(echo $result | jq -r '.ImageId')
-              echo $ami_id > /tmp/workspace/ami_id.txt
-            else
-              echo "An AMI with the same name already exists: $existing_ami"
-            fi
-      # - run: 
+      # - run:
       #     name: create AMI image and save AMI ID
       #     command: |
       #       instance_id=$(cat /tmp/workspace/ec2_id_1.txt | tr -d '"')
-      #       result=$(aws ec2 create-image --instance-id $instance_id --name "My sample-App" --no-reboot)
-      #       ami_id=$(echo $result | jq -r '.ImageId')
-      #       echo $ami_id > /tmp/workspace/ami_id.txt
+      #       ami_name="My sample-App"
+
+      #       existing_ami=$(aws ec2 describe-images --filters "Name=name,Values=$ami_name" --query 'Images[*].ImageId' --output text)
+
+      #       if [ -z "$existing_ami" ]; then
+      #         result=$(aws ec2 create-image --instance-id $instance_id --name $ami_name --no-reboot)
+      #         ami_id=$(echo $result | jq -r '.ImageId')
+      #         echo $ami_id > /tmp/workspace/ami_id.txt
+      #       else
+      #         echo "An AMI with the same name already exists: $existing_ami"
+      #       fi
+      - run: 
+          name: create AMI image and save AMI ID
+          command: |
+            instance_id=$(cat /tmp/workspace/ec2_id_1.txt | tr -d '"')
+            result=$(aws ec2 create-image --instance-id $instance_id --name "My sample-App" --no-reboot)
+            ami_id=$(echo $result | jq -r '.ImageId')
+            echo $ami_id > /tmp/workspace/ami_id.txt
       - run: cat /tmp/workspace/ami_id.txt
       - run:
           name: Read parameters from txt files
