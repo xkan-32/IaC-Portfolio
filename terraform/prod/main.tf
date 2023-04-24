@@ -159,3 +159,6 @@ output "CircleCIEC2InstanceoutputsIP2" {
 output "CircleCITeradaALBsoutputs" {
   value = module.my_ALB.TeradaALBsoutputs
 }
+output "CircleCITeradaTargetGroupsoutputs" {
+  value = module.my_ALB.TeradaTargetGroupsoutputs
+}

@@ -74,3 +74,6 @@ resource "aws_lb_listener" "TeradaListenerHTTP" {
 output "TeradaALBsoutputs" {
   value = aws_lb.TeradaALB.dns_name
 }
+output "TeradaTargetGroupsoutputs" {
+  value = aws_lb_target_group.TeradaTargetGroup.arn
+}
