@@ -196,8 +196,8 @@ jobs:
           name: Deploy CloudFormation 
           command: |
             aws cloudformation deploy \
-              --template-file your-template-file.yaml \
-              --stack-name your-stack-name \
+              --template-file cloudformation/EC2AutoScaling.yml \
+              --stack-name stack01 \
               --parameter-overrides \
                 VPCID=$VPC_ID \
                 Subnet1ID=$SUBNET_1_ID \
