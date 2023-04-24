@@ -80,17 +80,17 @@
 
 - name: edit databese_host
   become_user: ec2-user
-  lineinfile:
+  replace:
     path: /home/ec2-user/sample-app/app.py
     regexp: '        host="localhost",'
-    line: '        host="{{ RDS_ENDPOINT }}",'
+    replace: '        host="{{ RDS_ENDPOINT }}",'
 
 - name: edit databese_password
   become_user: ec2-user
-  lineinfile:
+  replace:
     path: /home/ec2-user/sample-app/app.py
     regexp: '        password="password",'
-    line: '        password="{{ RDS_PASSWORD }}",'
+    replace: '        password="{{ RDS_PASSWORD }}",'
 
 - name: Install Development Tools
   become: yes
