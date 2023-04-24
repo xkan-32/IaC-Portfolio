@@ -123,6 +123,9 @@ jobs:
             - 5e:e4:92:bb:b1:76:b2:9c:9b:21:6e:c3:e5:83:9e:bd
       - ansible-playbook/install:
           version: '2.10.7'
+      - run:
+          name: Install Ansible community.mysql collection
+          command: ansible-galaxy collection install community.mysql
       - attach_workspace:
           at: /tmp/workspace
       - run: cat /tmp/workspace/rds_endpoint.txt
@@ -158,11 +161,13 @@ jobs:
   #         aws-region: AWS_DEFAULT_REGION
   #     - attach_workspace:
   #         at: /tmp/workspace
-  #     - run: cat /tmp/workspace/rds_endpoint.txt
-  #     - run: cat /tmp/workspace/alb_dns_name.txt
+  #     - run: cat /tmp/workspace/vpc_id.txt
+  #     - run: cat /tmp/workspace/publicsubnet1a-id.txt
+  #     - run: cat /tmp/workspace/publicsubnet1b-id.txt
   #     - run: cat /tmp/workspace/ec2_ip_1.txt
-  #     - run: cat /tmp/workspace/ec2_ip_2.txt
-
+  #     - run:
+  #         name: create AMI image
+  #         command: aws ec2 create-image --instance-id $(cat /tmp/workspace/ec2_ip_1.txt) --name "My sample-App" --no-reboot
 workflows:
   IaC-Portfolio:
     jobs:
