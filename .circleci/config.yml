@@ -114,6 +114,8 @@ jobs:
           root: /tmp/workspace
           paths:
             - vpc_id.txt
+            - publicsubnet1a-id.txt
+            - publicsubnet1b-id.txt
             - ec2_id_1.txt
             - ec2_id_2.txt
             - ec2_ip_1.txt
