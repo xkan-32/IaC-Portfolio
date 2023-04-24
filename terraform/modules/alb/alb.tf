@@ -2,8 +2,8 @@
 #　ALB
 #-------------------------------------------------------
 resource "aws_lb" "TeradaALB" {
-  name     = "ALB-${var.NameBase}"
-  internal = false
+  name               = "ALB-${var.NameBase}"
+  internal           = false
   load_balancer_type = "application"
   subnets = [
     var.publicSubnet1a,
@@ -20,11 +20,11 @@ resource "aws_lb" "TeradaALB" {
 # target_group
 #-------------------------------------------------------
 resource "aws_lb_target_group" "TeradaTargetGroup" {
-  name     = "TargetGroup-${var.NameBase}"
-  port     = 80
-  protocol = "HTTP"
+  name        = "TargetGroup-${var.NameBase}"
+  port        = 80
+  protocol    = "HTTP"
   target_type = "instance"
-  vpc_id   = var.vpc_id
+  vpc_id      = var.vpc_id
 
   health_check {
     enabled             = true
