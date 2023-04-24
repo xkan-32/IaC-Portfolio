@@ -49,7 +49,7 @@ locals {
   ]
 }
 resource "aws_lb_target_group_attachment" "Teradaattachment" {
-  for_each = toset(local.ec2_instances)
+  for_each = local.ec2_instances
 
   target_group_arn = aws_lb_target_group.TeradaTargetGroup.arn
   target_id        = each.value
