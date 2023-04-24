@@ -65,7 +65,7 @@
 #     login_password: "{{ RDS_PASSWORD }}"
 
 - name: Database make table
-  shell: bash -lc 'mysql -h "{{ RDS_ENDPOINT }}" -p 3306 -u admin -p="{{ RDS_PASSWORD }}" water_bill_tracker < database.sql'
+  shell: bash -lc 'mysql -h "{{ RDS_ENDPOINT }}" -P 3306 -u admin -p"{{ RDS_PASSWORD }}" water_bill_tracker < database.sql'
   args:
     chdir: "/home/ec2-user/sample-app/"
 
