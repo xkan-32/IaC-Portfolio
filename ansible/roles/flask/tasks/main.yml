@@ -68,6 +68,7 @@
   shell: bash -lc 'mysql -h "{{ RDS_ENDPOINT }}" -P 3306 -u admin -p"{{ RDS_PASSWORD }}" water_bill_tracker < database.sql'
   args:
     chdir: "/home/ec2-user/sample-app/"
+  ignore_errors: true
 
 - name: edit permission sampleapp
   file:
