@@ -117,6 +117,8 @@ module "my_ALB" {
   publicSubnet1b   = module.my_vpc.PublicSubnet1boutputs
   albsecuritygroup = module.my_securitygroup.SecurityGroup02outputs
   vpc_id           = module.my_vpc.VPCoutputs
+  EC2_1 = module.my_ec2.EC2Instanceoutputs1
+  EC2_2 = module.my_ec2.EC2Instanceoutputs2
 }
 #-------------------------------------------------------
 # S3

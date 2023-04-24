@@ -42,6 +42,17 @@ resource "aws_lb_target_group" "TeradaTargetGroup" {
     Environment = var.env
   }
 }
+
+resource "aws_lb_target_group_attachment" "Teradaattachment" {
+
+  target_group_arn = aws_lb_target_group.TeradaTargetGroup.arn
+
+  target_id        = [
+    var.EC2_1,
+    var.EC2_2
+  ]
+  port             = 80
+}
 #-------------------------------------------------------
 # listener
 #-------------------------------------------------------

@@ -14,7 +14,11 @@ variable "env" {
 variable "publicSubnet1a" {}
 # ALBのサブネット
 variable "publicSubnet1b" {}
-# ALBのサブネット
+# ALBのセキュリティグループ
 variable "albsecuritygroup" {}
 # ALBのvpc
 variable "vpc_id" {}
+# ALBのEC2
+variable "EC2_1" {}
+# ALBのEC2
+variable "EC2_2" {}
