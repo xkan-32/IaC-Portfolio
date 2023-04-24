@@ -172,6 +172,6 @@ workflows:
   IaC-Portfolio:
     jobs:
       - deploy_IaC_for_terraform
-      - executeAnsible:
-          requires:
-            - deploy_IaC_for_terraform
+      # - executeAnsible:
+      #     requires:
+      #       - deploy_IaC_for_terraform
