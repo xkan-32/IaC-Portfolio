@@ -55,20 +55,19 @@
   args:
     chdir: "/home/ec2-user/sample-app/"
 
-- name: import SQL script
-  community.mysql.mysql_db:
-    name: water_bill_tracker
-    state: present
-    target: /home/ec2-user/sample-app/database.sql
-    login_host: "{{ RDS_ENDPOINT }}"
-    login_user: admin
-    login_password: "{{ RDS_PASSWORD }}"
+# - name: import SQL script
+#   community.mysql.mysql_db:
+#     name: water_bill_tracker
+#     state: present
+#     target: /home/ec2-user/sample-app/database.sql
+#     login_host: "{{ RDS_ENDPOINT }}"
+#     login_user: admin
+#     login_password: "{{ RDS_PASSWORD }}"
 
-# - name: Database make table
-#   become_user: ec2-user
-#   shell: bash -lc "mysql -h {{ RDS_ENDPOINT }} -p 3306 -u admin -p={{ RDS_PASSWORD }} water_bill_tracker < database.sql"
-#   args:
-#     chdir: "/home/ec2-user/sample-app/"
+- name: Database make table
+  shell: bash -lc "mysql -h "{{ RDS_ENDPOINT }}" -p 3306 -u admin -p="{{ RDS_PASSWORD }}" water_bill_tracker < database.sql"
+  args:
+    chdir: "/home/ec2-user/sample-app/"
 
 - name: edit permission sampleapp
   file:
