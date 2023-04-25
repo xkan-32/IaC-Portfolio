@@ -47,7 +47,6 @@
   git:
     repo: https://github.com/xkan-32/sample-app.git
     dest: /home/ec2-user/sample-app
-  force: yes
 
 - name: python modules install
   become_user: ec2-user
