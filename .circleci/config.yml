@@ -204,6 +204,7 @@ jobs:
           name: Read parameters from txt files
           command: |
             export VPC_ID=$(cat /tmp/workspace/vpc_id.txt | tr -d '"')
+            echo "VPC_ID: $VPC_ID"
             export SUBNET_1_ID=$(cat /tmp/workspace/publicsubnet1a-id.txt | tr -d '"')
             export SUBNET_2_ID=$(cat /tmp/workspace/publicsubnet1b-id.txt | tr -d '"')
             export CUSTOM_AMI=$(cat /tmp/workspace/ami_id.txt)
