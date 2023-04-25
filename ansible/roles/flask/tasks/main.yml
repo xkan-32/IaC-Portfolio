@@ -13,15 +13,15 @@
     state: present
     lock_timeout: 180
 
-# - name: check mysql installed
-#   stat:
-#     path: /usr/lib/systemd/system/mysqld.service
-#   register: mysql_installed
+- name: check mysql installed
+  stat:
+    path: /usr/lib/systemd/system/mysqld.service
+  register: mysql_installed
 
 - name: install mysql
   become_user: ec2-user
   shell: bash -lc "curl -fsSL https://raw.githubusercontent.com/MasatoshiMizumoto/raisetech_documents/main/aws/scripts/mysql_amazon_linux_2.sh | sh"
-  force: yes
+  when: not mysql_installed.stat.exists
 
 - name: Install MySQL-Python module1
   yum: name=MySQL-python
@@ -38,16 +38,16 @@
   become_user: ec2-user
   shell: bash -lc "source venv/bin/activate"
 
-- name: check app installed
-  stat: 
-    path: /home/ec2-user/sample-app
-  register: app_installed
+# - name: check app installed
+#   stat: 
+#     path: /home/ec2-user/sample-app
+#   register: app_installed
 
 - name: git clone app
   git:
     repo: https://github.com/xkan-32/sample-app.git
     dest: /home/ec2-user/sample-app
-  when: not app_installed.stat.exists
+  force: yes
 
 - name: python modules install
   become_user: ec2-user
