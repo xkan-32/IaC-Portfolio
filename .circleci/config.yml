@@ -208,8 +208,8 @@ jobs:
             aws cloudformation deploy \
               --template-file cloudformation/EC2AutoScaling.yml \
               --stack-name stack01 \
-              --parameters ParameterKey=CustomAMI,ParameterValue=$(cat /tmp/workspace/ami_id.txt) \
               --parameter-overrides \
+                CustomAMI=$(cat /tmp/workspace/ami_id.txt) \
                 VPCID=$VPC_ID \
                 Subnet1ID=$SUBNET_1_ID \
                 Subnet2ID=$SUBNET_2_ID \
