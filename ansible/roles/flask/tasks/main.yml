@@ -38,17 +38,23 @@
   become_user: ec2-user
   shell: bash -lc "source venv/bin/activate"
 
-# - name: check app installed
-#   stat: 
-#     path: /home/ec2-user/sample-app
-#   register: app_installed
+- name: check app installed
+  stat: 
+    path: /home/ec2-user/sample-app
+  register: app_installed
+
+- name: Delete a directory
+  file:
+    path: /home/ec2-user/sample-app
+    state: absent
+  when: app_installed.stat.exists
 
 - name: git clone app
   git:
     repo: https://github.com/xkan-32/sample-app.git
     dest: /home/ec2-user/sample-app
   force: yes
-  
+
 - name: python modules install
   become_user: ec2-user
   shell: bash -lc "pip3 install -r requirements.txt"
