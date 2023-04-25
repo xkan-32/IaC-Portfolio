@@ -203,11 +203,11 @@ jobs:
       - run:
           name: Read parameters from txt files
           command: |
-            export VPC_ID=$(cat /tmp/workspace/vpc_id.txt)
-            export SUBNET_1_ID=$(cat /tmp/workspace/publicsubnet1a-id.txt)
-            export SUBNET_2_ID=$(cat /tmp/workspace/publicsubnet1b-id.txt)
+            export VPC_ID=$(cat /tmp/workspace/vpc_id.txt | tr -d '"')
+            export SUBNET_1_ID=$(cat /tmp/workspace/publicsubnet1a-id.txt | tr -d '"')
+            export SUBNET_2_ID=$(cat /tmp/workspace/publicsubnet1b-id.txt | tr -d '"')
             export CUSTOM_AMI=$(cat /tmp/workspace/ami_id.txt)
-            export TARGET_GROUP_ARN=$(cat /tmp/workspace/alb_targetgroup.txt)
+            export TARGET_GROUP_ARN=$(cat /tmp/workspace/alb_targetgroup.txt | tr -d '"')
       - run:
           name: Deploy CloudFormation 
           command: |
