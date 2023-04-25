@@ -6,7 +6,7 @@ Parameters:
   VPCID:
     Description: VPC ID for the instances
     Type: String
-    
+
   Subnet1ID:
     Description: Subnet ID in AZ1
     Type: String
@@ -17,7 +17,7 @@ Parameters:
 
   CustomAMI:
     Description: custom Amazon Linux 2 AMI
-    Type: String
+    Type: AWS::EC2::Image::Id
 
   TargetGroupARN:
     Description: ALB Target Group
