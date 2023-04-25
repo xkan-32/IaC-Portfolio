@@ -180,7 +180,7 @@ jobs:
           name: create AMI image and save AMI ID
           command: |
             instance_id=$(cat /tmp/workspace/ec2_id_1.txt | tr -d '"')
-            ami_name="My sample-App"
+            ami_name="sample-App"
 
             existing_ami=$(aws ec2 describe-images --filters "Name=name,Values=$ami_name" --query 'Images[*].ImageId' --output text)
 
