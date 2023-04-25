@@ -19,14 +19,10 @@ Parameters:
     Description: custom Amazon Linux 2 AMI
     Type: AWS::EC2::Image::Id
 
-  TargetGroupARN1:
-    Description: ALB Target Group1
+  TargetGroupARN:
+    Description: ALB Target Group
     Type: String
   
-  TargetGroupARN2:
-    Description: ALB Target Group2
-    Type: String
-
 Resources:
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -39,8 +35,7 @@ Resources:
       MaxSize: '4'
       DesiredCapacity: '2'
       TargetGroupARNs:
-        - !Ref TargetGroupARN1
-        - !Ref TargetGroupARN2
+        - !Ref TargetGroupARN
 
   LaunchConfiguration:
     Type: AWS::AutoScaling::LaunchConfiguration
