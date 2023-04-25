@@ -162,3 +162,6 @@ output "CircleCITeradaALBsoutputs" {
 output "CircleCITeradaTargetGroupsoutputs" {
   value = module.my_ALB.TeradaTargetGroupsoutputs
 }
+output "CircleCISecurityGroup01outputs" {
+  value = module.my_vpc.SecurityGroup01outputs
+}

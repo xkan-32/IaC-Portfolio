@@ -2,11 +2,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Auto Scaling with EC2
 
-Parameters:
-  VPCID:
-    Description: VPC ID for the instances
-    Type: AWS::EC2::VPC::Id
-    
+Parameters:  
   Subnet1ID:
     Description: Subnet ID in AZ1
     Type: AWS::EC2::Subnet::Id
@@ -22,11 +18,16 @@ Parameters:
   TargetGroupARN:
     Description: ALB Target Group
     Type: String
-  
+
+  EC2SecurityGroup:
+    Description: SecurityGroup for ec2
+    Type: AWS::EC2::SecurityGroup::Id
+
 Resources:
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
+      AutoScalingGroupName: sampleapp-AutoScalingGroup
       VPCZoneIdentifier:
         - !Ref Subnet1ID
         - !Ref Subnet2ID
@@ -44,19 +45,4 @@ Resources:
       InstanceType: t2.micro
       KeyName: teradaterraform
       SecurityGroups:
-        - !Ref InstanceSecurityGroup
-
-  InstanceSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Enable SSH access and HTTP access
-      VpcId: !Ref VPCID
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
+        - !Ref EC2SecurityGroup
