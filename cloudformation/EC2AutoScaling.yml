@@ -5,15 +5,15 @@ Description: Auto Scaling with EC2
 Parameters:
   VPCID:
     Description: VPC ID for the instances
-    Type: String
+    Type: AWS::EC2::VPC::Id
     
   Subnet1ID:
     Description: Subnet ID in AZ1
-    Type: String
+    Type: AWS::EC2::Subnet::Id
 
   Subnet2ID:
     Description: Subnet ID in AZ2
-    Type: String
+    Type: AWS::EC2::Subnet::Id
 
   CustomAMI:
     Description: custom Amazon Linux 2 AMI

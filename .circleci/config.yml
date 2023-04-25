@@ -210,10 +210,10 @@ jobs:
               --stack-name stack01 \
               --parameter-overrides \
                 CustomAMI=$(cat /tmp/workspace/ami_id.txt) \
-                VPCID=$VPC_ID \
-                Subnet1ID=$SUBNET_1_ID \
-                Subnet2ID=$SUBNET_2_ID \
-                TargetGroupARN=$TARGET_GROUP_ARN
+                VPCID=$(cat /tmp/workspace/vpc_id.txt | tr -d '"') \
+                Subnet1ID=$(cat /tmp/workspace/publicsubnet1a-id.txt | tr -d '"') \
+                Subnet2ID=$(cat /tmp/workspace/publicsubnet1b-id.txt | tr -d '"') \
+                TargetGroupARN=$(cat /tmp/workspace/alb_targetgroup.txt | tr -d '"')
 workflows:
   IaC-Portfolio:
     jobs:
