@@ -48,7 +48,7 @@ Resources:
         - !Ref EC2SecurityGroup
       UserData:
         Fn::Base64: |
-          #!/bin/bash
+          #!/bin/bash -ex
           LOG_FILE="/home/ec2-user/userdata.log"
           {
             echo "Starting nginx..."
