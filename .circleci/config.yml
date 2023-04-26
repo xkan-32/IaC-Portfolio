@@ -207,6 +207,19 @@ jobs:
             cat /tmp/workspace/publicsubnet1b-id.txt | tr -d '"'
             cat /tmp/workspace/alb_targetgroup.txt | tr -d '"'
             cat /tmp/workspace/ec2_securitygroup_id.txt | tr -d '"'
+      
+      - run:
+          name: Check and Delete existing CloudFormation Stack
+          command: |
+            STACK_EXISTS=$(aws cloudformation describe-stacks --stack-name stack01 --query "Stacks[?StackName == 'stack01'].StackName" --output text || true)
+
+            if [ ! -z "$STACK_EXISTS" ]; then
+              echo "Stack 'stack01' already exists. Deleting"
+              aws cloudformation delete-stack --stack-name stack01
+              echo "Waiting for stack deletion to complete"
+              aws cloudformation wait stack-delete-complete --stack-name stack01
+            fi
+
       - run:
           name: Deploy CloudFormation 
           command: |
