@@ -60,6 +60,6 @@ Resources:
               echo 'Activating virtual environment...'
               source venv/bin/activate
               echo 'Starting uwsgi...'
-              uwsgi --ini /home/ec2-user/sample-app/uwsgi.ini --daemon
+              uwsgi --ini /home/ec2-user/sample-app/uwsgi.ini --daemonize /home/ec2-user/uwsgi.log
             "
           } >> "$LOG_FILE" 2>&1
