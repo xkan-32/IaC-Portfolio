@@ -51,15 +51,7 @@ Resources:
           #!/bin/bash -ex
           LOG_FILE="/home/ec2-user/userdata.log"
           {
-            echo "Starting nginx..."
-            sudo service nginx start
-            echo "Executing commands as ec2-user..."
-            sudo -u ec2-user -i bash -c "
-              echo 'Changing directory to /home/ec2-user/...'
-              cd /home/ec2-user/
-              echo 'Activating virtual environment...'
-              source venv/bin/activate
-              echo 'Starting uwsgi...'
-              uwsgi --ini /home/ec2-user/sample-app/uwsgi.ini --daemonize /home/ec2-user/uwsgi.log
-            "
+            service nginx start
+            sudo -u ec2-user -i bash -c "source /home/ec2-user/venv/bin/activate"
+            sudo -u ec2-user -i bash -c "uwsgi --ini /home/ec2-user/sample-app/uwsgi.ini --daemonize /home/ec2-user/uwsgi.log"
           } >> "$LOG_FILE" 2>&1
