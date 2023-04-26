@@ -52,7 +52,9 @@ Resources:
           LOG_FILE="/home/ec2-user/userdata.log"
           {
             sudo service nginx start
-            cd /home/ec2-user/
-            source venv/bin/activate
-            uwsgi --ini /home/ec2-user/sample-app/uwsgi.ini --daemonize /home/ec2-user/uwsgi.log
+            sudo -u ec2-user -i bash -c "
+              cd /home/ec2-user/
+              source venv/bin/activate
+              uwsgi --ini /home/ec2-user/sample-app/uwsgi.ini --daemon
+            "
           } >> "$LOG_FILE" 2>&1
