@@ -48,8 +48,11 @@ Resources:
         - !Ref EC2SecurityGroup
       UserData:
         Fn::Base64: |
-          #!/usr/bin/env bash
-          sudo service nginx start
-          cd /home/ec2-user/
-          source venv/bin/activate
-          uwsgi --ini /home/ec2-user/sample-app/uwsgi.ini --daemonize /home/ec2-user/uwsgi.log
+          #!/bin/bash
+          LOG_FILE="/home/ec2-user/userdata.log"
+          {
+            sudo service nginx start
+            cd /home/ec2-user/
+            source venv/bin/activate
+            uwsgi --ini /home/ec2-user/sample-app/uwsgi.ini --daemonize /home/ec2-user/uwsgi.log
+          } >> "$LOG_FILE" 2>&1
