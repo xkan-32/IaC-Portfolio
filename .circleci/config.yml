@@ -57,193 +57,193 @@ jobs:
           name: Refresh Terraform state
           command: |
             terraform refresh
-      # - terraform/destroy:
-      #     var:
-      #       'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
-      #     path: terraform/prod
-      - run:
-          name: get output data vpc id
-          command: |
-            mkdir -p /tmp/workspace
-            cd terraform/prod
-            echo "$(terraform output CircleCIVPCoutputs)" > /tmp/workspace/vpc_id.txt
-            cat /tmp/workspace/vpc_id.txt
-      - run:
-          name: get output data subnet1a id
-          command: |
-            cd terraform/prod
-            echo "$(terraform output CircleCIPublicSubnet1aoutputs)" > /tmp/workspace/publicsubnet1a-id.txt
-            cat /tmp/workspace/publicsubnet1a-id.txt
-      - run:
-          name: get output data subnet1b id
-          command: |
-            cd terraform/prod
-            echo "$(terraform output CircleCIPublicSubnet1boutputs)" > /tmp/workspace/publicsubnet1b-id.txt
-            cat /tmp/workspace/publicsubnet1b-id.txt
-      - run:
-          name: get output data rds endpoint
-          command: |
-            cd terraform/prod
-            echo "$(terraform output CircleCITeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
-            cat /tmp/workspace/rds_endpoint.txt
-      - run:
-          name: get output data alb dns
-          command: |
-            cd terraform/prod
-            echo "$(terraform output CircleCITeradaALBsoutputs)" > /tmp/workspace/alb_dns_name.txt
-            cat /tmp/workspace/alb_dns_name.txt
-      - run:
-          name: get output data alb target group
-          command: |
-            cd terraform/prod
-            echo "$(terraform output CircleCITeradaTargetGroupsoutputs)" > /tmp/workspace/alb_targetgroup.txt
-            cat /tmp/workspace/alb_targetgroup.txt
-      - run:
-          name: get output data EC2 ID
-          command: |
-            cd terraform/prod
-            echo "$(terraform output CircleCIEC2Instanceoutputs1)" > /tmp/workspace/ec2_id_1.txt
-            cat /tmp/workspace/ec2_id_1.txt
-      - run:
-          name: get output data EC2 IP
-          command: |
-            cd terraform/prod
-            echo "$(terraform output CircleCIEC2InstanceoutputsIP1)" > /tmp/workspace/ec2_ip_1.txt
-            cat /tmp/workspace/ec2_ip_1.txt
-      - run:
-          name: get output data SecurityGroup
-          command: |
-            cd terraform/prod
-            echo "$(terraform output CircleCISecurityGroup01outputs)" > /tmp/workspace/ec2_securitygroup_id.txt
-            cat /tmp/workspace/ec2_securitygroup_id.txt
-      - persist_to_workspace:
-          root: /tmp/workspace
-          paths:
-            - vpc_id.txt
-            - publicsubnet1a-id.txt
-            - publicsubnet1b-id.txt
-            - ec2_id_1.txt
-            - ec2_ip_1.txt
-            - rds_endpoint.txt
-            - alb_dns_name.txt
-            - alb_targetgroup.txt
-            - ec2_securitygroup_id.txt
+      - terraform/destroy:
+          var:
+            'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
+          path: terraform/prod
+  #     - run:
+  #         name: get output data vpc id
+  #         command: |
+  #           mkdir -p /tmp/workspace
+  #           cd terraform/prod
+  #           echo "$(terraform output CircleCIVPCoutputs)" > /tmp/workspace/vpc_id.txt
+  #           cat /tmp/workspace/vpc_id.txt
+  #     - run:
+  #         name: get output data subnet1a id
+  #         command: |
+  #           cd terraform/prod
+  #           echo "$(terraform output CircleCIPublicSubnet1aoutputs)" > /tmp/workspace/publicsubnet1a-id.txt
+  #           cat /tmp/workspace/publicsubnet1a-id.txt
+  #     - run:
+  #         name: get output data subnet1b id
+  #         command: |
+  #           cd terraform/prod
+  #           echo "$(terraform output CircleCIPublicSubnet1boutputs)" > /tmp/workspace/publicsubnet1b-id.txt
+  #           cat /tmp/workspace/publicsubnet1b-id.txt
+  #     - run:
+  #         name: get output data rds endpoint
+  #         command: |
+  #           cd terraform/prod
+  #           echo "$(terraform output CircleCITeradaDatabasesoutputs)" > /tmp/workspace/rds_endpoint.txt
+  #           cat /tmp/workspace/rds_endpoint.txt
+  #     - run:
+  #         name: get output data alb dns
+  #         command: |
+  #           cd terraform/prod
+  #           echo "$(terraform output CircleCITeradaALBsoutputs)" > /tmp/workspace/alb_dns_name.txt
+  #           cat /tmp/workspace/alb_dns_name.txt
+  #     - run:
+  #         name: get output data alb target group
+  #         command: |
+  #           cd terraform/prod
+  #           echo "$(terraform output CircleCITeradaTargetGroupsoutputs)" > /tmp/workspace/alb_targetgroup.txt
+  #           cat /tmp/workspace/alb_targetgroup.txt
+  #     - run:
+  #         name: get output data EC2 ID
+  #         command: |
+  #           cd terraform/prod
+  #           echo "$(terraform output CircleCIEC2Instanceoutputs1)" > /tmp/workspace/ec2_id_1.txt
+  #           cat /tmp/workspace/ec2_id_1.txt
+  #     - run:
+  #         name: get output data EC2 IP
+  #         command: |
+  #           cd terraform/prod
+  #           echo "$(terraform output CircleCIEC2InstanceoutputsIP1)" > /tmp/workspace/ec2_ip_1.txt
+  #           cat /tmp/workspace/ec2_ip_1.txt
+  #     - run:
+  #         name: get output data SecurityGroup
+  #         command: |
+  #           cd terraform/prod
+  #           echo "$(terraform output CircleCISecurityGroup01outputs)" > /tmp/workspace/ec2_securitygroup_id.txt
+  #           cat /tmp/workspace/ec2_securitygroup_id.txt
+  #     - persist_to_workspace:
+  #         root: /tmp/workspace
+  #         paths:
+  #           - vpc_id.txt
+  #           - publicsubnet1a-id.txt
+  #           - publicsubnet1b-id.txt
+  #           - ec2_id_1.txt
+  #           - ec2_ip_1.txt
+  #           - rds_endpoint.txt
+  #           - alb_dns_name.txt
+  #           - alb_targetgroup.txt
+  #           - ec2_securitygroup_id.txt
 
-  executeAnsible:
-    executor: ansible-playbook/default
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints:
-            - 5e:e4:92:bb:b1:76:b2:9c:9b:21:6e:c3:e5:83:9e:bd
-      - ansible-playbook/install:
-          version: '2.10.7'
-      - run:
-          name: Install Ansible community.mysql collection
-          command: ansible-galaxy collection install community.mysql
-      - attach_workspace:
-          at: /tmp/workspace
-      - run: cat /tmp/workspace/rds_endpoint.txt
-      - run: cat /tmp/workspace/alb_dns_name.txt
-      - run: cat /tmp/workspace/ec2_ip_1.txt
-      - run:
-          name: get output data EC2 IP
-          command: |
-            cd ansible
-            echo "$(cat /tmp/workspace/ec2_ip_1.txt)" >> hosts   
-      - ansible-playbook/playbook:
-          playbook: ansible/playbook.yml
-          playbook-options: '-u ec2-user -i ansible/hosts --private-key ~/.ssh/id_rsa --extra-vars "EC2_IP1=$(cat /tmp/workspace/ec2_ip_1.txt)" --extra-vars "ALB_DNS=$(cat /tmp/workspace/alb_dns_name.txt)" --extra-vars "RDS_PASSWORD=$CIRCLECI_RDS_PASSWORD" --extra-vars "RDS_ENDPOINT=$(cat /tmp/workspace/rds_endpoint.txt)"'
+  # executeAnsible:
+  #   executor: ansible-playbook/default
+  #   steps:
+  #     - checkout
+  #     - add_ssh_keys:
+  #         fingerprints:
+  #           - 5e:e4:92:bb:b1:76:b2:9c:9b:21:6e:c3:e5:83:9e:bd
+  #     - ansible-playbook/install:
+  #         version: '2.10.7'
+  #     - run:
+  #         name: Install Ansible community.mysql collection
+  #         command: ansible-galaxy collection install community.mysql
+  #     - attach_workspace:
+  #         at: /tmp/workspace
+  #     - run: cat /tmp/workspace/rds_endpoint.txt
+  #     - run: cat /tmp/workspace/alb_dns_name.txt
+  #     - run: cat /tmp/workspace/ec2_ip_1.txt
+  #     - run:
+  #         name: get output data EC2 IP
+  #         command: |
+  #           cd ansible
+  #           echo "$(cat /tmp/workspace/ec2_ip_1.txt)" >> hosts   
+  #     - ansible-playbook/playbook:
+  #         playbook: ansible/playbook.yml
+  #         playbook-options: '-u ec2-user -i ansible/hosts --private-key ~/.ssh/id_rsa --extra-vars "EC2_IP1=$(cat /tmp/workspace/ec2_ip_1.txt)" --extra-vars "ALB_DNS=$(cat /tmp/workspace/alb_dns_name.txt)" --extra-vars "RDS_PASSWORD=$CIRCLECI_RDS_PASSWORD" --extra-vars "RDS_ENDPOINT=$(cat /tmp/workspace/rds_endpoint.txt)"'
 
-  cfn-lint:
-    executor: python/default
-    steps:
-      - checkout
-      - run: pip install cfn-lint
-      - run:
-          name: run cfn-lint
-          command: |
-            cfn-lint -i W3002 -t cloudformation/*.yml
+  # cfn-lint:
+  #   executor: python/default
+  #   steps:
+  #     - checkout
+  #     - run: pip install cfn-lint
+  #     - run:
+  #         name: run cfn-lint
+  #         command: |
+  #           cfn-lint -i W3002 -t cloudformation/*.yml
   
-  Auto-Scaling:
-    executor: aws-cli/default
-    steps:
-      - checkout
-      - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_DEFAULT_REGION
-      - attach_workspace:
-          at: /tmp/workspace
-      - run: cat /tmp/workspace/publicsubnet1a-id.txt
-      - run: cat /tmp/workspace/publicsubnet1b-id.txt
-      - run: cat /tmp/workspace/ec2_id_1.txt
-      - run: cat /tmp/workspace/alb_targetgroup.txt
-      - run: cat /tmp/workspace/ec2_securitygroup_id.txt
-      - run:
-          name: create AMI image and save AMI ID
-          command: |
-            instance_id=$(cat /tmp/workspace/ec2_id_1.txt | tr -d '"')
-            ami_name="sample-App"
+  # Auto-Scaling:
+  #   executor: aws-cli/default
+  #   steps:
+  #     - checkout
+  #     - aws-cli/setup:
+  #         aws-access-key-id: AWS_ACCESS_KEY_ID
+  #         aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+  #         aws-region: AWS_DEFAULT_REGION
+  #     - attach_workspace:
+  #         at: /tmp/workspace
+  #     - run: cat /tmp/workspace/publicsubnet1a-id.txt
+  #     - run: cat /tmp/workspace/publicsubnet1b-id.txt
+  #     - run: cat /tmp/workspace/ec2_id_1.txt
+  #     - run: cat /tmp/workspace/alb_targetgroup.txt
+  #     - run: cat /tmp/workspace/ec2_securitygroup_id.txt
+  #     - run:
+  #         name: create AMI image and save AMI ID
+  #         command: |
+  #           instance_id=$(cat /tmp/workspace/ec2_id_1.txt | tr -d '"')
+  #           ami_name="sample-App"
 
-            existing_ami=$(aws ec2 describe-images --filters "Name=name,Values=$ami_name" --query 'Images[*].ImageId' --output text)
+  #           existing_ami=$(aws ec2 describe-images --filters "Name=name,Values=$ami_name" --query 'Images[*].ImageId' --output text)
 
-            if [ -n "$existing_ami" ]; then
-              echo "Deleting existing AMI: $existing_ami"
-              aws ec2 deregister-image --image-id $existing_ami
-            fi
+  #           if [ -n "$existing_ami" ]; then
+  #             echo "Deleting existing AMI: $existing_ami"
+  #             aws ec2 deregister-image --image-id $existing_ami
+  #           fi
 
-            result=$(aws ec2 create-image --instance-id $instance_id --name $ami_name --no-reboot)
-            ami_id=$(echo $result | jq -r '.ImageId')
-            echo $ami_id > /tmp/workspace/ami_id.txt
-      - run: cat /tmp/workspace/ami_id.txt
-      - run:
-          name: Read parameters from txt files
-          command: |
-            cat /tmp/workspace/publicsubnet1a-id.txt | tr -d '"'
-            cat /tmp/workspace/publicsubnet1b-id.txt | tr -d '"'
-            cat /tmp/workspace/alb_targetgroup.txt | tr -d '"'
-            cat /tmp/workspace/ec2_securitygroup_id.txt | tr -d '"'
+  #           result=$(aws ec2 create-image --instance-id $instance_id --name $ami_name --no-reboot)
+  #           ami_id=$(echo $result | jq -r '.ImageId')
+  #           echo $ami_id > /tmp/workspace/ami_id.txt
+  #     - run: cat /tmp/workspace/ami_id.txt
+  #     - run:
+  #         name: Read parameters from txt files
+  #         command: |
+  #           cat /tmp/workspace/publicsubnet1a-id.txt | tr -d '"'
+  #           cat /tmp/workspace/publicsubnet1b-id.txt | tr -d '"'
+  #           cat /tmp/workspace/alb_targetgroup.txt | tr -d '"'
+  #           cat /tmp/workspace/ec2_securitygroup_id.txt | tr -d '"'
       
-      - run:
-          name: Check and Delete existing CloudFormation Stack
-          command: |
-            STACK_EXISTS=$(aws cloudformation describe-stacks --stack-name stack01 --query "Stacks[?StackName == 'stack01'].StackName" --output text || true)
+  #     - run:
+  #         name: Check and Delete existing CloudFormation Stack
+  #         command: |
+  #           STACK_EXISTS=$(aws cloudformation describe-stacks --stack-name stack01 --query "Stacks[?StackName == 'stack01'].StackName" --output text || true)
 
-            if [ ! -z "$STACK_EXISTS" ]; then
-              echo "Stack 'stack01' already exists. Deleting"
-              aws cloudformation delete-stack --stack-name stack01
-              echo "Waiting for stack deletion to complete"
-              aws cloudformation wait stack-delete-complete --stack-name stack01
-            fi
+  #           if [ ! -z "$STACK_EXISTS" ]; then
+  #             echo "Stack 'stack01' already exists. Deleting"
+  #             aws cloudformation delete-stack --stack-name stack01
+  #             echo "Waiting for stack deletion to complete"
+  #             aws cloudformation wait stack-delete-complete --stack-name stack01
+  #           fi
 
-      - run:
-          name: Deploy CloudFormation 
-          command: |
-            aws cloudformation deploy \
-              --template-file cloudformation/EC2AutoScaling.yml \
-              --stack-name stack01 \
-              --parameter-overrides \
-                EMAIL=$E_MAIL_ADDRESS \
-                CustomAMI=$(cat /tmp/workspace/ami_id.txt) \
-                Subnet1ID=$(cat /tmp/workspace/publicsubnet1a-id.txt | tr -d '"') \
-                Subnet2ID=$(cat /tmp/workspace/publicsubnet1b-id.txt | tr -d '"') \
-                EC2SecurityGroup=$(cat /tmp/workspace/ec2_securitygroup_id.txt | tr -d '"') \
-                TargetGroupARN=$(cat /tmp/workspace/alb_targetgroup.txt | tr -d '"')  
-      - run:
-          name: stop EC2
-          command: aws ec2 terminate-instances --instance-ids $(cat /tmp/workspace/ec2_id_1.txt | tr -d '"')
+  #     - run:
+  #         name: Deploy CloudFormation 
+  #         command: |
+  #           aws cloudformation deploy \
+  #             --template-file cloudformation/EC2AutoScaling.yml \
+  #             --stack-name stack01 \
+  #             --parameter-overrides \
+  #               EMAIL=$E_MAIL_ADDRESS \
+  #               CustomAMI=$(cat /tmp/workspace/ami_id.txt) \
+  #               Subnet1ID=$(cat /tmp/workspace/publicsubnet1a-id.txt | tr -d '"') \
+  #               Subnet2ID=$(cat /tmp/workspace/publicsubnet1b-id.txt | tr -d '"') \
+  #               EC2SecurityGroup=$(cat /tmp/workspace/ec2_securitygroup_id.txt | tr -d '"') \
+  #               TargetGroupARN=$(cat /tmp/workspace/alb_targetgroup.txt | tr -d '"')  
+  #     - run:
+  #         name: stop EC2
+  #         command: aws ec2 terminate-instances --instance-ids $(cat /tmp/workspace/ec2_id_1.txt | tr -d '"')
           
 workflows:
   IaC-Portfolio:
     jobs:
       - deploy_IaC_for_terraform
-      - executeAnsible:
-          requires:
-            - deploy_IaC_for_terraform
-      - cfn-lint:
-          requires:
-            - executeAnsible
-      - Auto-Scaling:
-          requires:
-            - cfn-lint
+      # - executeAnsible:
+      #     requires:
+      #       - deploy_IaC_for_terraform
+      # - cfn-lint:
+      #     requires:
+      #       - executeAnsible
+      # - Auto-Scaling:
+      #     requires:
+      #       - cfn-lint
