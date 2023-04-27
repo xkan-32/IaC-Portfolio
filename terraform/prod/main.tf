@@ -118,7 +118,7 @@ module "my_ALB" {
   albsecuritygroup = module.my_securitygroup.SecurityGroup02outputs
   vpc_id           = module.my_vpc.VPCoutputs
   EC2_1            = module.my_ec2.EC2Instanceoutputs1
-  EC2_2            = module.my_ec2.EC2Instanceoutputs2
+  # EC2_2            = module.my_ec2.EC2Instanceoutputs2
 }
 #-------------------------------------------------------
 # S3
