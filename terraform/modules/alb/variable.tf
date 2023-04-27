@@ -21,4 +21,4 @@ variable "vpc_id" {}
 # ALBのEC2
 variable "EC2_1" {}
 # ALBのEC2
-variable "EC2_2" {}
+# variable "EC2_2" {}
