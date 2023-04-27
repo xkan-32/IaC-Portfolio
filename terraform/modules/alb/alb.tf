@@ -45,7 +45,7 @@ resource "aws_lb_target_group" "TeradaTargetGroup" {
 locals {
   ec2_instances = {
     "EC2instance1" = var.EC2_1
-    "EC2instance2" = var.EC2_2
+    # "EC2instance2" = var.EC2_2
   }
 }
 resource "aws_lb_target_group_attachment" "Teradaattachment" {

@@ -23,6 +23,10 @@ Parameters:
     Description: SecurityGroup for ec2
     Type: AWS::EC2::SecurityGroup::Id
 
+  EMAIL:
+    Description: my e-mail address
+    Type: String
+
 Resources:
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -71,6 +75,14 @@ Resources:
       AutoScalingGroupName: !Ref AutoScalingGroup
       Cooldown: 300
       ScalingAdjustment: -1
+
+  NotificationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: "AutoScalingNotificationTopic"
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref EMAIL
 
   CPUAlarmHigh:
     Type: AWS::CloudWatch::Alarm

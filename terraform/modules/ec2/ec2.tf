@@ -8,7 +8,7 @@ data "aws_ssm_parameter" "LatestAmiId" {
 locals {
   EC2Instances_map = {
     "instance1" = var.publicsubnet1a
-    "instance2" = var.publicsubnet1b
+    # "instance2" = var.publicsubnet1b
   }
 }
 
@@ -44,14 +44,14 @@ output "EC2Instanceoutputs1" {
   value = aws_instance.TeradaEC2Instance["instance1"].id
 }
 
-output "EC2Instanceoutputs2" {
-  value = aws_instance.TeradaEC2Instance["instance2"].id
-}
+# output "EC2Instanceoutputs2" {
+#   value = aws_instance.TeradaEC2Instance["instance2"].id
+# }
 
 output "EC2InstanceoutputsIP1" {
   value = aws_instance.TeradaEC2Instance["instance1"].public_ip
 }
 
-output "EC2InstanceoutputsIP2" {
-  value = aws_instance.TeradaEC2Instance["instance2"].public_ip
-}
+# output "EC2InstanceoutputsIP2" {
+#   value = aws_instance.TeradaEC2Instance["instance2"].public_ip
+# }
