@@ -14,7 +14,11 @@
 2. AnsibleによりEC2にアプリケーションをデプロイ
     * ポイント
         * CircleCIのworkspaceより環境変数を取得
+            * 環境変数はTerraformのoutputをtxt保存したものを使用
 3. カスタムAMIの作成
+    * ポイント
+        * デプロイしたEC2からAWSCLIよりカスタムIAMを作成
+        * EC2のIDは
 4. EC2をオートスケーリング
 ## 各Jobの説明
     
