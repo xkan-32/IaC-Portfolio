@@ -104,14 +104,14 @@ Resources:
   CPUAlarmLow:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmDescription: "Scale-in if CPU utilization <= 30% for 5 minutes"
+      AlarmDescription: "Scale-in if CPU utilization <= 30% for 30 minutes"
       Namespace: AWS/EC2
       MetricName: CPUUtilization
       Dimensions:
         - Name: AutoScalingGroupName
           Value: !Ref AutoScalingGroup
       Statistic: Average
-      Period: 300
+      Period: 1800
       EvaluationPeriods: 1
       Threshold: 30
       ComparisonOperator: LessThanOrEqualToThreshold
