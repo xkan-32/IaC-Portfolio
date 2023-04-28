@@ -18,11 +18,11 @@ resource "aws_vpc" "TeradaVPC" {
 locals {
   public_subnets = {
     "1a" = {
-      cidr_block = var.cidr_block_PublicSubnet1a
+      cidr_block        = var.cidr_block_PublicSubnet1a
       availability_zone = var.AZ_1a
     },
     "1b" = {
-      cidr_block = var.cidr_block_PublicSubnet1b
+      cidr_block        = var.cidr_block_PublicSubnet1b
       availability_zone = var.AZ_1b
     }
   }
@@ -49,11 +49,11 @@ resource "aws_subnet" "TeradaPublicSubnet" {
 locals {
   private_subnets = {
     "1a" = {
-      cidr_block = var.cidr_block_PrivateSubnet1a
+      cidr_block        = var.cidr_block_PrivateSubnet1a
       availability_zone = var.AZ_1a
     },
     "1b" = {
-      cidr_block = var.cidr_block_PrivateSubnet1b
+      cidr_block        = var.cidr_block_PrivateSubnet1b
       availability_zone = var.AZ_1b
     }
   }
@@ -122,7 +122,7 @@ resource "aws_route_table" "PrivaterouteTable" {
   }
 }
 resource "aws_route_table_association" "TeradaPrivateSubnetRouteTableAssociation" {
-  for_each = aws_subnet.TeradaPrivateSubnet
+  for_each       = aws_subnet.TeradaPrivateSubnet
   subnet_id      = each.value.id
   route_table_id = aws_route_table.PrivaterouteTable.id
 }
