@@ -1,4 +1,6 @@
 # Infrastructure as Code（IaC）とCI/CDによる自動化
+-----
+-----
 ## 背景
 * AWSの学習を進める中で、『AWS Well-Architected フレームワークの柱』を意識して、自作のアプリケーションを実装してみたいと思ったからです。
 * 以下では、『運用上の優秀性』・『信頼性』を意識して表題を実装しました。
@@ -18,13 +20,15 @@
     * ポイント
         * CircleCIのworkspaceより環境変数を取得
         * 環境変数はTerraformのoutputをtxt保存したものを使用
-3. AWS CLIを使用し、カスタムAMIの作成
+3. AWS CLIを使用し、カスタムAMIの作成・EC2インスタンス終了
     * ポイント
-        * デプロイしたEC2からAWSCLIでカスタムIAMを作成
+        * アプリケーションをデプロイしたEC2からAWSCLIでカスタムIAMを作成
         * EC2のIDは、Terraformのoutputから取得
+        * 下記のオートスケーリングが実装されたら、自動でインスタンス終了
 4. CloudFormationを使用し、EC2をオートスケーリング
     * ポイント
         * カスタムAMIを使用しオートスケーリングを実装
+        * UserDataを使用しアプリケーション起動
         * EC2のCPU使用率に対して、CloudWatchアラームを設定し、EC2のスケールイン・アウトを実行
         * アラーム時にSNSを使用しE-mail通知
 --------
@@ -40,7 +44,9 @@
 -------
 ## アプリケーションについて
 * Flask・Uwsgi・Nginxを使用したアプリケーションです。[自作アプリケーション](https://github.com/xkan-32/sample-app)
-* 動作の様子
+* 動作の様子（初期状態のアプリケーション）
 ![app](https://user-images.githubusercontent.com/121345057/235046195-a7f71d74-49fe-4928-b54f-9b0c7e11d036.gif)
 ------
 ## 動作の確認
+* オートスケーリングの確認
+* CI/CDの確認
