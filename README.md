@@ -46,7 +46,10 @@
 * Flask・Uwsgi・Nginxを使用したアプリケーションです。[自作アプリケーション](https://github.com/xkan-32/sample-app)
 * 動作の様子（初期状態のアプリケーション）
 ![app](https://user-images.githubusercontent.com/121345057/235046195-a7f71d74-49fe-4928-b54f-9b0c7e11d036.gif)
+* [アプリケーションの変更履歴](/app%E5%A4%89%E6%9B%B4%E5%B1%A5%E6%AD%B4.txt)
 ------
 ## 動作の確認
 * オートスケーリングの確認
+![オートスケーリング確認](image/%E3%82%AA%E3%83%BC%E3%83%88%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E7%A2%BA%E8%AA%8D.png)
 * CI/CDの確認
+![CICD確認](image/CI%3ACD%E7%A2%BA%E8%AA%8D.png)

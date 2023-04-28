@@ -1,66 +1,66 @@
 
-version: 2.1
-orbs:
-  terraform: circleci/terraform@3.2.0
-  ansible-playbook: orbss/ansible-playbook@0.0.5
-  python: circleci/python@2.0.3
-  aws-cli: circleci/aws-cli@3.1.4
+# version: 2.1
+# orbs:
+#   terraform: circleci/terraform@3.2.0
+#   ansible-playbook: orbss/ansible-playbook@0.0.5
+#   python: circleci/python@2.0.3
+#   aws-cli: circleci/aws-cli@3.1.4
 
-jobs:
-  deploy_IaC_for_terraform:
-    executor: terraform/default
-    steps:
-      - checkout
-      - terraform/init:
-          path: terraform/prod
-      - run:
-          name: Refresh Terraform state
-          command: |
-            terraform refresh
-      - terraform/validate:
-          path: terraform/prod
-      - terraform/validate:
-          path: terraform/modules/alb
-      - terraform/validate:
-          path: terraform/modules/ec2
-      - terraform/validate:
-          path: terraform/modules/network
-      - terraform/validate:
-          path: terraform/modules/rds
-      - terraform/validate:
-          path: terraform/modules/s3
-      - terraform/validate:
-          path: terraform/modules/securitygroup
-      - terraform/fmt:
-          path: terraform/prod
-      - terraform/fmt:
-          path: terraform/modules/alb
-      - terraform/fmt:
-          path: terraform/modules/ec2
-      - terraform/fmt:
-          path: terraform/modules/network
-      - terraform/fmt:
-          path: terraform/modules/rds
-      - terraform/fmt:
-          path: terraform/modules/s3
-      - terraform/fmt:
-          path: terraform/modules/securitygroup
-      - terraform/plan:
-          var:
-            'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
-          path: terraform/prod
-      - terraform/apply:
-          var:
-            'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
-          path: terraform/prod
-      - run:
-          name: Refresh Terraform state
-          command: |
-            terraform refresh
-      - terraform/destroy:
-          var:
-            'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
-          path: terraform/prod
+# jobs:
+#   deploy_IaC_for_terraform:
+#     executor: terraform/default
+#     steps:
+#       - checkout
+#       - terraform/init:
+#           path: terraform/prod
+#       - run:
+#           name: Refresh Terraform state
+#           command: |
+#             terraform refresh
+#       - terraform/validate:
+#           path: terraform/prod
+#       - terraform/validate:
+#           path: terraform/modules/alb
+#       - terraform/validate:
+#           path: terraform/modules/ec2
+#       - terraform/validate:
+#           path: terraform/modules/network
+#       - terraform/validate:
+#           path: terraform/modules/rds
+#       - terraform/validate:
+#           path: terraform/modules/s3
+#       - terraform/validate:
+#           path: terraform/modules/securitygroup
+#       - terraform/fmt:
+#           path: terraform/prod
+#       - terraform/fmt:
+#           path: terraform/modules/alb
+#       - terraform/fmt:
+#           path: terraform/modules/ec2
+#       - terraform/fmt:
+#           path: terraform/modules/network
+#       - terraform/fmt:
+#           path: terraform/modules/rds
+#       - terraform/fmt:
+#           path: terraform/modules/s3
+#       - terraform/fmt:
+#           path: terraform/modules/securitygroup
+#       - terraform/plan:
+#           var:
+#             'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
+#           path: terraform/prod
+#       - terraform/apply:
+#           var:
+#             'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
+#           path: terraform/prod
+#       - run:
+#           name: Refresh Terraform state
+#           command: |
+#             terraform refresh
+#       - terraform/destroy:
+#           var:
+#             'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
+#           path: terraform/prod
   #     - run:
   #         name: get output data vpc id
   #         command: |
@@ -234,11 +234,11 @@ jobs:
   #         name: stop EC2
   #         command: aws ec2 terminate-instances --instance-ids $(cat /tmp/workspace/ec2_id_1.txt | tr -d '"')
           
-workflows:
-  IaC-Portfolio:
-    jobs:
-      - deploy_IaC_for_terraform
-      # - executeAnsible:
+# workflows:
+#   IaC-Portfolio:
+#     jobs:
+#       - deploy_IaC_for_terraform
+#       # - executeAnsible:
       #     requires:
       #       - deploy_IaC_for_terraform
       # - cfn-lint:
