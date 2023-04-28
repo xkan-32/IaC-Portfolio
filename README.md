@@ -36,10 +36,11 @@
     * CloudWatch・・アラームを設定し、オートスケーリングのトリガーとして設定、E-mail通知
 
 * インフラ構成図
-
+![インフラ構成図](image/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9%E6%A7%8B%E6%88%90%E5%9B%B3.svg)
 -------
 ## アプリケーションについて
-* Flask・Uwsgi・Nginxを使用したアプリケーションです。URL
+* Flask・Uwsgi・Nginxを使用したアプリケーションです。[自作アプリケーション](https://github.com/xkan-32/sample-app)
 * 動作の様子
+![app](https://user-images.githubusercontent.com/121345057/235046195-a7f71d74-49fe-4928-b54f-9b0c7e11d036.gif)
 ------
 ## 動作の確認
