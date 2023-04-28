@@ -45,22 +45,22 @@ jobs:
           path: terraform/modules/s3
       - terraform/fmt:
           path: terraform/modules/securitygroup
-      # - terraform/plan:
-      #     var:
-      #       'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
-      #     path: terraform/prod
-      # - terraform/apply:
-      #     var:
-      #       'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
-      #     path: terraform/prod
-      - run:
-          name: Refresh Terraform state
-          command: |
-            terraform refresh
-      - terraform/destroy:
+      - terraform/plan:
           var:
             'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
           path: terraform/prod
+      - terraform/apply:
+          var:
+            'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
+          path: terraform/prod
+      # - run:
+      #     name: Refresh Terraform state
+      #     command: |
+      #       terraform refresh
+      # - terraform/destroy:
+      #     var:
+      #       'CIRCLECI_RDS_PASSWORD=${CIRCLECI_RDS_PASSWORD}'
+      #     path: terraform/prod
       - run:
           name: get output data vpc id
           command: |
