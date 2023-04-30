@@ -1,0 +1,150 @@
+---
+- name: update yum
+  become: yes
+  yum:
+    name: "*"
+    state: latest
+  ignore_errors: yes
+
+- name: install git
+  become: yes
+  yum:
+    name: git
+    state: present
+    lock_timeout: 180
+
+- name: check mysql installed
+  stat:
+    path: /usr/lib/systemd/system/mysqld.service
+  register: mysql_installed
+
+- name: install mysql
+  become_user: ec2-user
+  shell: bash -lc "curl -fsSL https://raw.githubusercontent.com/MasatoshiMizumoto/raisetech_documents/main/aws/scripts/mysql_amazon_linux_2.sh | sh"
+  when: not mysql_installed.stat.exists
+
+- name: Install MySQL-Python module1
+  yum: name=MySQL-python
+
+- name: stop mysql
+  become: yes
+  shell: bash -lc "service mysqld stop"
+
+- name: Create a Python virtual environment
+  become_user: ec2-user
+  command: python3 -m venv venv
+
+- name: Activate virtual environment
+  become_user: ec2-user
+  shell: bash -lc "source venv/bin/activate"
+
+- name: check app installed
+  stat: 
+    path: /home/ec2-user/sample-app
+  register: app_installed
+
+- name: Delete a directory
+  file:
+    path: /home/ec2-user/sample-app
+    state: absent
+  when: app_installed.stat.exists
+
+- name: git clone app
+  git:
+    repo: https://github.com/xkan-32/sample-app.git
+    dest: /home/ec2-user/sample-app
+
+- name: python modules install
+  become_user: ec2-user
+  shell: bash -lc "pip3 install -r requirements.txt"
+  args:
+    chdir: "/home/ec2-user/sample-app/"
+
+# - name: import SQL script
+#   community.mysql.mysql_db:
+#     name: water_bill_tracker
+#     state: present
+#     target: /home/ec2-user/sample-app/database.sql
+#     login_host: "{{ RDS_ENDPOINT }}"
+#     login_user: admin
+#     login_password: "{{ RDS_PASSWORD }}"
+
+- name: Database make table
+  shell: bash -lc 'mysql -h "{{ RDS_ENDPOINT }}" -P 3306 -u admin -p"{{ RDS_PASSWORD }}" water_bill_tracker < database.sql'
+  args:
+    chdir: "/home/ec2-user/sample-app/"
+  ignore_errors: true
+
+- name: edit permission sampleapp
+  file:
+    path: /home/ec2-user/sample-app
+    state: directory
+    owner: ec2-user
+    group: ec2-user
+    recurse: yes
+
+- name: edit databese_host
+  become_user: ec2-user
+  replace:
+    path: /home/ec2-user/sample-app/app.py
+    regexp: '        host="localhost",'
+    replace: '        host="{{ RDS_ENDPOINT }}",'
+
+- name: edit databese_password
+  become_user: ec2-user
+  replace:
+    path: /home/ec2-user/sample-app/app.py
+    regexp: '        password="password",'
+    replace: '        password="{{ RDS_PASSWORD }}",'
+
+- name: Install Development Tools
+  become: yes
+  yum:
+    name: "@Development Tools"
+
+- name: install python3-devel
+  become: yes
+  yum:
+    name: python3-devel
+
+- name: Activate virtual environment
+  become_user: ec2-user
+  shell: bash -lc "source venv/bin/activate"
+
+- name: install uwsgi
+  become_user: ec2-user
+  shell: bash -lc "pip3 install uwsgi"
+
+- name: install nginx
+  become: yes
+  shell: bash -lc "amazon-linux-extras install -y nginx1"
+
+- name: setting nginx 
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+
+- name: setting nginx for app
+  template:
+    src: templates/app.conf.j2
+    dest: /etc/nginx/conf.d/app.conf
+
+- name: edit app.conf
+  become: yes
+  lineinfile: 
+    path: /etc/nginx/conf.d/app.conf
+    regexp: '        server_name ;'
+    line: '        server_name {{ ALB_DNS }};'
+
+- name: setting uwsgi
+  template:
+    src: templates/uwsgi.ini.j2
+    dest: /home/ec2-user/sample-app/uwsgi.ini
+
+- name: start nginx
+  become: yes
+  shell: bash -lc "service nginx start"
+
+- name: start uwsgi
+  become_user: ec2-user
+  shell: bash -lc "uwsgi --ini /home/ec2-user/sample-app/uwsgi.ini --daemonize /home/ec2-user/uwsgi.log"

@@ -1,0 +1,11 @@
+---
+- hosts: ec2_1
+  become: yes
+  roles:
+    - flask
+
+# - hosts: ec2_2
+#   become: yes
+#   roles:
+#     - flask
+    

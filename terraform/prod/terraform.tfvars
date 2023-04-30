@@ -1,0 +1,2 @@
+NAMEBASE = "prod"
+ENV      = "prod"

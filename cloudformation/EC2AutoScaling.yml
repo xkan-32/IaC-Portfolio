@@ -1,0 +1,119 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Auto Scaling with EC2
+
+Parameters:  
+  Subnet1ID:
+    Description: Subnet ID in AZ1
+    Type: AWS::EC2::Subnet::Id
+
+  Subnet2ID:
+    Description: Subnet ID in AZ2
+    Type: AWS::EC2::Subnet::Id
+
+  CustomAMI:
+    Description: custom Amazon Linux 2 AMI
+    Type: AWS::EC2::Image::Id
+
+  TargetGroupARN:
+    Description: ALB Target Group
+    Type: String
+
+  EC2SecurityGroup:
+    Description: SecurityGroup for ec2
+    Type: AWS::EC2::SecurityGroup::Id
+
+  EMAIL:
+    Description: my e-mail address
+    Type: String
+
+Resources:
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: sampleapp-AutoScalingGroup
+      VPCZoneIdentifier:
+        - !Ref Subnet1ID
+        - !Ref Subnet2ID
+      LaunchConfigurationName: !Ref LaunchConfiguration
+      MinSize: '1'
+      MaxSize: '4'
+      DesiredCapacity: '2'
+      TargetGroupARNs:
+        - !Ref TargetGroupARN
+
+  LaunchConfiguration:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: !Ref CustomAMI
+      InstanceType: t2.micro
+      KeyName: teradaterraform
+      SecurityGroups:
+        - !Ref EC2SecurityGroup
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash -ex
+          LOG_FILE="/home/ec2-user/userdata.log"
+          {
+            service nginx start
+            sudo -u ec2-user -i bash -c "source /home/ec2-user/venv/bin/activate"
+            sudo -u ec2-user -i bash -c "uwsgi --ini /home/ec2-user/sample-app/uwsgi.ini --daemonize /home/ec2-user/uwsgi.log"
+          } >> "$LOG_FILE" 2>&1
+
+  ScaleOutPolicy:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AdjustmentType: ChangeInCapacity
+      AutoScalingGroupName: !Ref AutoScalingGroup
+      Cooldown: 300
+      ScalingAdjustment: 1
+
+  ScaleInPolicy:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AdjustmentType: ChangeInCapacity
+      AutoScalingGroupName: !Ref AutoScalingGroup
+      Cooldown: 300
+      ScalingAdjustment: -1
+
+  NotificationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: "AutoScalingNotificationTopic"
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref EMAIL
+
+  CPUAlarmHigh:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: "Scale-out if CPU utilization >= 70% for 5 minutes"
+      Namespace: AWS/EC2
+      MetricName: CPUUtilization
+      Dimensions:
+        - Name: AutoScalingGroupName
+          Value: !Ref AutoScalingGroup
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 70
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      AlarmActions:
+        - !Ref ScaleOutPolicy
+
+  CPUAlarmLow:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: "Scale-in if CPU utilization <= 30% for 30 minutes"
+      Namespace: AWS/EC2
+      MetricName: CPUUtilization
+      Dimensions:
+        - Name: AutoScalingGroupName
+          Value: !Ref AutoScalingGroup
+      Statistic: Average
+      Period: 1800
+      EvaluationPeriods: 1
+      Threshold: 30
+      ComparisonOperator: LessThanOrEqualToThreshold
+      AlarmActions:
+        - !Ref ScaleInPolicy
