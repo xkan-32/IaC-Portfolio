@@ -35,7 +35,13 @@ Resources:
       VPCZoneIdentifier:
         - !Ref Subnet1ID
         - !Ref Subnet2ID
-      LaunchConfigurationName: !Ref LaunchConfiguration
+      MixedInstancesPolicy: 
+        LaunchTemplate: 
+          LaunchTemplateSpecification: 
+            LaunchTemplateId: !Ref LaunchTemplate
+            Version: !GetAtt LaunchTemplate.LatestVersionNumber
+          Overrides: 
+            - InstanceType: t2.micro
       MinSize: '1'
       MaxSize: '4'
       DesiredCapacity: '2'
@@ -47,23 +53,62 @@ Resources:
           - autoscaling:EC2_INSTANCE_LAUNCH
           - autoscaling:EC2_INSTANCE_TERMINATE
 
-  LaunchConfiguration:
-    Type: AWS::AutoScaling::LaunchConfiguration
+  # AutoScalingGroup:           #起動設定Ver.
+  #   Type: AWS::AutoScaling::AutoScalingGroup
+  #   Properties:
+  #     AutoScalingGroupName: sampleapp-AutoScalingGroup
+  #     VPCZoneIdentifier:
+  #       - !Ref Subnet1ID
+  #       - !Ref Subnet2ID
+  #     LaunchConfigurationName: !Ref LaunchConfiguration
+  #     MinSize: '1'
+  #     MaxSize: '4'
+  #     DesiredCapacity: '2'
+  #     TargetGroupARNs:
+  #       - !Ref TargetGroupARN
+  #     NotificationConfigurations:
+  #     - TopicARN: !Ref NotificationTopic
+  #       NotificationTypes:
+  #         - autoscaling:EC2_INSTANCE_LAUNCH
+  #         - autoscaling:EC2_INSTANCE_TERMINATE
+
+  LaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
     Properties:
-      ImageId: !Ref CustomAMI
-      InstanceType: t2.micro
-      KeyName: teradaterraform
-      SecurityGroups:
-        - !Ref EC2SecurityGroup
-      UserData:
-        Fn::Base64: |
-          #!/bin/bash -ex
-          LOG_FILE="/home/ec2-user/userdata.log"
-          {
-            service nginx start
-            sudo -u ec2-user -i bash -c "source /home/ec2-user/venv/bin/activate"
-            sudo -u ec2-user -i bash -c "uwsgi --ini /home/ec2-user/sample-app/uwsgi.ini --daemonize /home/ec2-user/uwsgi.log"
-          } >> "$LOG_FILE" 2>&1
+      LaunchTemplateName: sampleapp-LaunchTemplate
+      LaunchTemplateData: 
+        ImageId: !Ref CustomAMI
+        InstanceType: t2.micro
+        KeyName: teradaterraform
+        SecurityGroupIds:
+          - !Ref EC2SecurityGroup
+        UserData:
+          Fn::Base64: |
+            #!/bin/bash -ex
+            LOG_FILE="/home/ec2-user/userdata.log"
+            {
+              service nginx start
+              sudo -u ec2-user -i bash -c "source /home/ec2-user/venv/bin/activate"
+              sudo -u ec2-user -i bash -c "uwsgi --ini /home/ec2-user/sample-app/uwsgi.ini --daemonize /home/ec2-user/uwsgi.log"
+            } >> "$LOG_FILE" 2>&1
+
+  # LaunchConfiguration:
+  #   Type: AWS::AutoScaling::LaunchConfiguration
+  #   Properties:
+  #     ImageId: !Ref CustomAMI
+  #     InstanceType: t2.micro
+  #     KeyName: teradaterraform
+  #     SecurityGroups:
+  #       - !Ref EC2SecurityGroup
+  #     UserData:
+  #       Fn::Base64: |
+  #         #!/bin/bash -ex
+  #         LOG_FILE="/home/ec2-user/userdata.log"
+  #         {
+  #           service nginx start
+  #           sudo -u ec2-user -i bash -c "source /home/ec2-user/venv/bin/activate"
+  #           sudo -u ec2-user -i bash -c "uwsgi --ini /home/ec2-user/sample-app/uwsgi.ini --daemonize /home/ec2-user/uwsgi.log"
+  #         } >> "$LOG_FILE" 2>&1
 
   ScaleOutPolicy:
     Type: AWS::AutoScaling::ScalingPolicy
